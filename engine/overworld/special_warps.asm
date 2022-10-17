@@ -9,10 +9,6 @@ SpecialWarpIn::
 	ld a, [wDestinationMap]
 	jr .next2
 .next
-	bit 1, [hl]
-	jr z, .next3
-	call DebugStart
-.next3
 	ld a, 0
 .next2
 	ld b, a

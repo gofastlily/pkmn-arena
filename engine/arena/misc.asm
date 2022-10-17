@@ -144,12 +144,13 @@ NotEnoughMemoryText:
 
 
 StartBattleNow:
+	call BattleNowStart
 	ld a, OPP_RIVAL1
 	ld [wCurOpponent], a
 	ld a, $1
 	ld [wTrainerNo], a
-	call SpecialWarpIn
-	call SpecialEnterMap
+	call NewBattle
+	call Init
 
 
 DisplayContinueGameInfo:
