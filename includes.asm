@@ -1,5 +1,6 @@
 INCLUDE "charmap.asm"
 
+INCLUDE "macros/arena.asm"
 INCLUDE "macros/asserts.asm"
 INCLUDE "macros/const.asm"
 INCLUDE "macros/predef.asm"

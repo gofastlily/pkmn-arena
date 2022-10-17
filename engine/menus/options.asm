@@ -1,4 +1,4 @@
-DisplayOptionMenu_:
+DisplayOptionMenu:
 	call InitOptionsMenu
 .optionMenuLoop
 	call JoypadLowSensitivity

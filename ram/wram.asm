@@ -2293,7 +2293,14 @@ wRoute18Gate1FCurScript:: db
 	ds 78
 wGameProgressFlagsEnd::
 
-	ds 56
+
+; Menu values
+wArenaMenuChoicesCount:: db
+wArenaMenuActionsItems:: ds ARENA_MENU_CAPACITY * 2 + 1
+wArenaMenuTextItems:: ds ARENA_MENU_CAPACITY * 2 + 1
+
+; unused
+	ds 29
 
 wObtainedHiddenItemsFlags:: flag_array 112
 
