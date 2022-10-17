@@ -1,0 +1,67 @@
+stages:
+  - check
+  - build
+  - upload
+  - release
+
+variables:
+  PKMNARENA_GBC: "pkmnarena.gbc"
+  PKMNARENA_DEBUG_GBC: "pkmnarena_debug.gbc"
+  PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${CI_PROJECT_NAME}"
+  RELEASES_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/releases"
+  VERSION_FILE: "VERSION.txt"
+
+check_version:
+  stage: check
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" || $CI_PIPELINE_SOURCE == "merge_request_event"'
+  script:
+    - |
+      RELEASE_VERSION=$(cat ${VERSION_FILE})
+    - |
+      curl -f -LI --header "JOB-TOKEN: ${CI_JOB_TOKEN}" "${RELEASES_URL}/${RELEASE_VERSION}" && exit 1 || exit 0
+
+build:
+  stage: build
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+  script:
+    - |
+      docker build -t $CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA .
+    - |
+      docker run --name $CI_PROJECT_NAME $CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA
+    - |
+      docker cp $CI_PROJECT_NAME:/output $CI_PROJECT_DIR
+    - |
+      docker rm $CI_PROJECT_NAME
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/output/*.gbc
+
+upload:
+  stage: upload
+  image: curlimages/curl:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+  script:
+    - |
+      RELEASE_VERSION=$(cat ${VERSION_FILE})
+    - |
+      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file output/${PKMNARENA_GBC} "${PACKAGE_REGISTRY_URL}/${RELEASE_VERSION}/${PKMNARENA_GBC}"
+    - |
+      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file output/${PKMNARENA_DEBUG_GBC} "${PACKAGE_REGISTRY_URL}/${RELEASE_VERSION}/${PKMNARENA_DEBUG_GBC}"
+
+release:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+  script:
+    - |
+      RELEASE_VERSION=$(cat ${VERSION_FILE})
+    - |
+      RELEASE_NOTES=$(sed -n "/$RELEASE_VERSION/,/^## /p" CHANGELOG.md | tail -n +2 | head -n -2)
+    - |
+      release-cli create --name "Release $RELEASE_VERSION" --tag-name $RELEASE_VERSION --description "$RELEASE_NOTES" \
+        --assets-link "{\"name\":\"${PKMNARENA_GBC}\",\"url\":\"${PACKAGE_REGISTRY_URL}/${RELEASE_VERSION}/${PKMNARENA_GBC}\"}" \
+        --assets-link "{\"name\":\"${PKMNARENA_DEBUG_GBC}\",\"url\":\"${PACKAGE_REGISTRY_URL}/${RELEASE_VERSION}/${PKMNARENA_DEBUG_GBC}\"}"
