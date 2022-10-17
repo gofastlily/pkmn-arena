@@ -143,15 +143,12 @@ NotEnoughMemoryText:
 	text_end
 
 
-StartNewGame:
-	ld hl, wd732
-	res 1, [hl]
-StartNewGameDebug:
-	call OakSpeech
-	ld a, $8
-	ld [wPlayerMovingDirection], a
-	ld c, 20
-	call DelayFrames
+StartBattleNow:
+	ld a, OPP_RIVAL1
+	ld [wCurOpponent], a
+	ld a, $1
+	ld [wTrainerNo], a
+	call SpecialWarpIn
 	call SpecialEnterMap
 
 

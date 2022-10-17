@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## Unreleased
+### Added
+- Battle Now mode
+
+### Fixed
+- Debug mode assigns a team to the player at the start Battle Now
 
 
 ## [0.0.1](https://gitlab.lily.rip/lily/pkmn-arena/-/compare/0.0.0...0.0.1) - 2022-10-17

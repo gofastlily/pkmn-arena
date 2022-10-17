@@ -55,7 +55,7 @@ IF DEF(_DEBUG)
 	; DEBUG
 	ld hl, wd732
 	set 1, [hl]
-	ld hl, StartNewGameDebug
+	;ld hl, StartNewGameDebug
 	ret
 
 DebugPlayerName:

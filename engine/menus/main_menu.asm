@@ -31,7 +31,7 @@ MainMenu:
 
 MainMenuChoicesList:
 	arena_menu_choice Determine_MainMenuChoice_Continue,   Action_MainMenuChoices_Continue,   Text_MainMenuChoices_Continue
-	arena_menu_choice Determine_MainMenuChoice_NewGame,    Action_MainMenuChoices_NewGame,    Text_MainMenuChoices_NewGame
+	arena_menu_choice Determine_MainMenuChoice_BattleNow,    Action_MainMenuChoices_BattleNow,    Text_MainMenuChoices_BattleNow
 	arena_menu_choice Determine_MainMenuChoice_Options,    Action_MainMenuChoices_Options,    Text_MainMenuChoices_Options
 	dw ARENA_MENU_CHOICES_LIST_END
 
@@ -43,7 +43,7 @@ Determine_MainMenuChoice_Continue:
 	ret
 
 
-Determine_MainMenuChoice_NewGame:
+Determine_MainMenuChoice_BattleNow:
 	xor a
 	cp 1
 	ret
@@ -70,12 +70,16 @@ Action_MainMenuChoices_Continue:
 	jp SpecialEnterMap
 
 
-Action_MainMenuChoices_NewGame:
+Action_MainMenuChoices_BattleNow:
 IF DEF(_DEBUG)
-	callfar StartNewGameDebug
+	ld hl, wd732
+	set 1, [hl]
+	farcall DebugStart
 ELSE
-	callfar StartNewGame
+	ld hl, wd732
+	res 1, [hl]
 ENDC
+	callfar StartBattleNow
 	ret
 
 
@@ -90,8 +94,8 @@ Text_MainMenuChoices_Continue:
 	db "CONTINUE@"
 
 
-Text_MainMenuChoices_NewGame:
-	db "NEW GAME@"
+Text_MainMenuChoices_BattleNow:
+	db "BATTLE NOW@"
 
 
 Text_MainMenuChoices_Options:

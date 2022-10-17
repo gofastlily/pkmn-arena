@@ -32,3 +32,7 @@
 *.sn*
 *.sa*
 *.sg1
+
+# vscode files
+.vscode/
+
