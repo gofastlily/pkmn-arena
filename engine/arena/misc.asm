@@ -9,6 +9,10 @@ InitOptions:
 	ld [wOptions], a
 	ld a, 64
 	ld [wPrinterSettings], a
+	; Skip nicknaming by default
+	xor a
+	set 7, a
+	ld [wArenaOptions], a
 	ret
 
 

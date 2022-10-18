@@ -2299,8 +2299,14 @@ wArenaMenuChoicesCount:: db
 wArenaMenuActionsItems:: ds ARENA_MENU_CAPACITY * 2 + 1
 wArenaMenuTextItems:: ds ARENA_MENU_CAPACITY * 2 + 1
 
+; Extra options
+; bit 7 = Nickname on acquisition
+; 0: Yes
+; 1: No
+wArenaOptions:: db
+
 ; unused
-	ds 29
+	ds 28
 
 wObtainedHiddenItemsFlags:: flag_array 112
 

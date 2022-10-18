@@ -71,14 +71,6 @@ Action_MainMenuChoices_Continue:
 
 
 Action_MainMenuChoices_BattleNow:
-IF DEF(_DEBUG)
-	ld hl, wd732
-	set 1, [hl]
-	farcall DebugStart
-ELSE
-	ld hl, wd732
-	res 1, [hl]
-ENDC
 	callfar StartBattleNow
 	ret
 
