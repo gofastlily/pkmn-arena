@@ -171,6 +171,7 @@ SpecialTrainerMoves:
 	db 3, 2, BIDE
 	db 3, 3, DIG
 	db 3, 4, SLASH
+	nop
 	db 4, 1, SURF
 	db 4, 2, WITHDRAW
 	db 4, 3, STRENGTH

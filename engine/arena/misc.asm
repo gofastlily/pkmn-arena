@@ -149,11 +149,6 @@ NotEnoughMemoryText:
 
 StartBattleNow:
 	call BattleNowStart
-	; Move opponent team to BattleNowStart
-	ld a, OPP_RIVAL3
-	ld [wCurOpponent], a
-	ld a, $5
-	ld [wTrainerNo], a
 	; Show teams
 	; Select team order
 	call NewBattle

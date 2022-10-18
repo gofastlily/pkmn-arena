@@ -1,5 +1,4 @@
 SetBattleNowTeam:
-	ld de, BattleNowTeamR1A
 .loop
 	ld a, [de]
 	cp -1
@@ -11,6 +10,20 @@ SetBattleNowTeam:
 	inc de
 	call AddPartyMon
 	jr .loop
+
+
+SetBattleNowTeamR1A:
+	ld de, BattleNowTeamR1A
+	call SetBattleNowTeam
+	call BattleNowTeamMovesR1A
+	ret
+
+
+SetBattleNowTeamR1B:
+	ld de, BattleNowTeamR1B
+	call SetBattleNowTeam
+	call BattleNowTeamMovesR1B
+	ret
 
 
 BattleNowTeamR1A:
@@ -33,16 +46,7 @@ BattleNowTeamR1B:
 	db -1 ; end
 
 
-BattleNowStart:
-	xor a ; PLAYER_PARTY_DATA
-	ld [wMonDataLocation], a
-
-	; Get all badges
-	ld a, 1 << BIT_EARTHBADGE
-	ld [wObtainedBadges], a
-
-	call SetBattleNowTeam
-
+BattleNowTeamMovesR1A:
 	ld hl, wPartyMon1Moves
 	ld a, THUNDERBOLT
 	ld [hli], a
@@ -102,5 +106,99 @@ BattleNowStart:
 	ld [hli], a
 	ld a, MEGA_PUNCH
 	ld [hl], a
+	ret
+
+
+BattleNowTeamMovesR1B:
+	ld hl, wPartyMon1Moves
+	ld a, THUNDERBOLT
+	ld [hli], a
+	ld a, SUPERSONIC
+	ld [hli], a
+	ld a, THUNDER_WAVE
+	ld [hli], a
+	ld a, SWIFT
+	ld [hl], a
+
+	ld hl, wPartyMon2Moves
+	ld a, MEGA_DRAIN
+	ld [hli], a
+	ld a, SLEEP_POWDER
+	ld [hli], a
+	ld a, DOUBLE_EDGE
+	ld [hli], a
+	ld a, PETAL_DANCE
+	ld [hl], a
+
+	ld hl, wPartyMon3Moves
+	ld a, FLAMETHROWER
+	ld [hli], a
+	ld a, CONFUSE_RAY
+	ld [hli], a
+	ld a, DIG
+	ld [hli], a
+	ld a, FIRE_BLAST
+	ld [hl], a
+
+	ld hl, wPartyMon4Moves
+	ld a, SURF
+	ld [hli], a
+	ld a, DISABLE
+	ld [hli], a
+	ld a, CONFUSION
+	ld [hli], a
+	ld a, ICE_BEAM
+	ld [hl], a
+
+	ld hl, wPartyMon5Moves
+	ld a, EARTHQUAKE
+	ld [hli], a
+	ld a, FOCUS_ENERGY
+	ld [hli], a
+	ld a, SUBMISSION
+	ld [hli], a
+	ld a, BODY_SLAM
+	ld [hl], a
+
+	ld hl, wPartyMon6Moves
+	ld a, FURY_SWIPES
+	ld [hli], a
+	ld a, GROWL
+	ld [hli], a
+	ld a, THUNDER
+	ld [hli], a
+	ld a, TAKE_DOWN
+	ld [hl], a
+	ret
+
+
+BattleNowStart:
+	xor a ; PLAYER_PARTY_DATA
+	ld [wMonDataLocation], a
+
+	; Get all badges
+	ld a, 1 << BIT_EARTHBADGE
+	ld [wObtainedBadges], a
+
+	; Face the Rival for now
+	ld a, OPP_RIVAL3
+	ld [wCurOpponent], a
+
+	; Pick a random team of two
+	call Random
+	and %1
+	jp nz, .teamB
+	call SetBattleNowTeamR1A
+	; Set Rival Team
+	ld a, $5
+	ld [wTrainerNo], a
+	jp .teamDone
+.teamB
+	call SetBattleNowTeamR1B
+	; Set Rival Team
+	ld a, $4
+	ld [wTrainerNo], a
+	jp .teamDone
+.teamDone
 
 	ret
