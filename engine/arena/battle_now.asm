@@ -1,6 +1,5 @@
-; not IshiharaTeam
 SetBattleNowTeam:
-	ld de, BattleNowTeam
+	ld de, BattleNowTeamR1A
 .loop
 	ld a, [de]
 	cp -1
@@ -14,11 +13,23 @@ SetBattleNowTeam:
 	jr .loop
 
 
-BattleNowTeam:
-	db SNORLAX, 80
-	db PERSIAN, 80
-	db JIGGLYPUFF, 15
-	db STARTER_PIKACHU, 5
+BattleNowTeamR1A:
+	db PIKACHU, 50
+	db BULBASAUR, 50
+	db BULBASAUR, 50
+	db SQUIRTLE, 50
+	db SANDSHREW, 50
+	db CLEFAIRY, 50
+	db -1 ; end
+
+
+BattleNowTeamR1B:
+	db MAGNEMITE, 50
+	db ODDISH, 50
+	db VULPIX, 50
+	db PSYDUCK, 50
+	db CUBONE, 50
+	db MEOWTH, 50
 	db -1 ; end
 
 

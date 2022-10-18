@@ -429,4 +429,4 @@ INCLUDE "engine/debug/debug_menu.asm"
 SECTION "Arena", ROMX
 INCLUDE "engine/arena/menu.asm"
 INCLUDE "engine/arena/misc.asm"
-INCLUDE "engine/arena/battle_now/party.asm"
+INCLUDE "engine/arena/battle_now.asm"
