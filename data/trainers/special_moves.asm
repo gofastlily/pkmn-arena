@@ -157,4 +157,58 @@ SpecialTrainerMoves:
 	db 6, 3, QUICK_ATTACK
 	db 0
 
+	; Arena Battle Now Round 1 A
+	db RIVAL3, 4
+	db 1, 1, THUNDERBOLT
+	db 1, 2, QUICK_ATTACK
+	db 1, 3, THUNDER_WAVE
+	db 1, 4, SWIFT
+	db 2, 1, RAZOR_LEAF
+	db 2, 2, SLEEP_POWDER
+	db 2, 3, LEECH_SEED
+	db 2, 4, CUT
+	db 3, 1, FLAMETHROWER
+	db 3, 2, BIDE
+	db 3, 3, DIG
+	db 3, 4, SLASH
+	db 4, 1, SURF
+	db 4, 2, WITHDRAW
+	db 4, 3, STRENGTH
+	db 4, 4, ICE_BEAM
+	db 5, 1, EARTHQUAKE
+	db 5, 2, SAND_ATTACK
+	db 5, 3, SUBMISSION
+	db 5, 4, ROCK_SLIDE
+	db 6, 1, DOUBLESLAP
+	db 6, 2, METRONOME
+	db 6, 3, THUNDER
+	db 6, 4, MEGA_PUNCH
+
+	; Arena Battle Now Round 1 B
+	db RIVAL3, 5
+	db 1, 1, THUNDERBOLT
+	db 1, 2, SUPERSONIC
+	db 1, 3, THUNDER_WAVE
+	db 1, 4, SWIFT
+	db 2, 1, MEGA_DRAIN
+	db 2, 2, SLEEP_POWDER
+	db 2, 3, DOUBLE_EDGE
+	db 2, 4, PETAL_DANCE
+	db 3, 1, FLAMETHROWER
+	db 3, 2, CONFUSE_RAY
+	db 3, 3, DIG
+	db 3, 4, FIRE_BLAST
+	db 4, 1, SURF
+	db 4, 2, DISABLE
+	db 4, 3, CONFUSION
+	db 4, 4, ICE_BEAM
+	db 5, 1, EARTHQUAKE
+	db 5, 2, FOCUS_ENERGY
+	db 5, 3, SUBMISSION
+	db 5, 4, BODY_SLAM
+	db 6, 1, FURY_SWIPES
+	db 6, 2, GROWL
+	db 6, 3, THUNDER
+	db 6, 4, TAKE_DOWN
+
 	db -1 ; end

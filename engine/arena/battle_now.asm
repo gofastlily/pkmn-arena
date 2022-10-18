@@ -37,65 +37,70 @@ BattleNowStart:
 	xor a ; PLAYER_PARTY_DATA
 	ld [wMonDataLocation], a
 
-	; Fly anywhere.
-	dec a ; $ff
-	ld [wTownVisitedFlag], a
-	ld [wTownVisitedFlag + 1], a
-
-	; Get all badges except Earth Badge.
-	ld a, ~(1 << BIT_EARTHBADGE)
+	; Get all badges
+	ld a, 1 << BIT_EARTHBADGE
 	ld [wObtainedBadges], a
 
 	call SetBattleNowTeam
 
-	; Pikachu gets Surf.
-	ld a, SURF
-	ld hl, wPartyMon4Moves + 2
+	ld hl, wPartyMon1Moves
+	ld a, THUNDERBOLT
+	ld [hli], a
+	ld a, QUICK_ATTACK
+	ld [hli], a
+	ld a, THUNDER_WAVE
+	ld [hli], a
+	ld a, SWIFT
 	ld [hl], a
 
-	; Snorlax gets four HM moves.
-	ld hl, wPartyMon1Moves
-	ld a, FLY
+	ld hl, wPartyMon2Moves
+	ld a, RAZOR_LEAF
+	ld [hli], a
+	ld a, SLEEP_POWDER
+	ld [hli], a
+	ld a, LEECH_SEED
 	ld [hli], a
 	ld a, CUT
+	ld [hl], a
+
+	ld hl, wPartyMon3Moves
+	ld a, FLAMETHROWER
 	ld [hli], a
+	ld a, BIDE
+	ld [hli], a
+	ld a, DIG
+	ld [hli], a
+	ld a, SLASH
+	ld [hl], a
+
+	ld hl, wPartyMon4Moves
 	ld a, SURF
 	ld [hli], a
+	ld a, WITHDRAW
+	ld [hli], a
 	ld a, STRENGTH
+	ld [hli], a
+	ld a, ICE_BEAM
 	ld [hl], a
 
-	; Complete the Pokédex.
-	ld hl, wPokedexOwned
-	call BattleNowSetPokedexEntries
-	ld hl, wPokedexSeen
-	call BattleNowSetPokedexEntries
-	SetEvent EVENT_GOT_POKEDEX
-
-	; Rival chose Jolteon.
-	ld hl, wRivalStarter
-	ld a, RIVAL_STARTER_JOLTEON
+	ld hl, wPartyMon5Moves
+	ld a, EARTHQUAKE
 	ld [hli], a
-	ld a, NUM_POKEMON
-	ld [hli], a ; hl = wUnknownDebugByte
-	ld a, STARTER_PIKACHU
-	ld [hl], a ; hl = wPlayerStarter
-
-	; Give max money.
-	ld hl, wPlayerMoney
-	ld a, $99
+	ld a, SAND_ATTACK
 	ld [hli], a
+	ld a, SUBMISSION
 	ld [hli], a
+	ld a, ROCK_SLIDE
 	ld [hl], a
 
-	ret
-
-
-BattleNowSetPokedexEntries:
-	ld b, wPokedexOwnedEnd - wPokedexOwned - 1
-	ld a, %11111111
-.loop
+	ld hl, wPartyMon6Moves
+	ld a, DOUBLESLAP
 	ld [hli], a
-	dec b
-	jr nz, .loop
-	ld [hl], %01111111
+	ld a, METRONOME
+	ld [hli], a
+	ld a, THUNDER
+	ld [hli], a
+	ld a, MEGA_PUNCH
+	ld [hl], a
+
 	ret
