@@ -16,7 +16,7 @@ SetBattleNowTeam:
 BattleNowTeamR1A:
 	db PIKACHU, 50
 	db BULBASAUR, 50
-	db BULBASAUR, 50
+	db CHARMANDER, 50
 	db SQUIRTLE, 50
 	db SANDSHREW, 50
 	db CLEFAIRY, 50
@@ -64,22 +64,6 @@ BattleNowStart:
 	ld a, STRENGTH
 	ld [hl], a
 
-	; Get some debug items.
-	ld hl, wNumBagItems
-	ld de, BattleNowItemsList
-.items_loop
-	ld a, [de]
-	cp -1
-	jr z, .items_end
-	ld [wcf91], a
-	inc de
-	ld a, [de]
-	inc de
-	ld [wItemQuantity], a
-	call AddItemToInventory
-	jr .items_loop
-.items_end
-
 	; Complete the Pokédex.
 	ld hl, wPokedexOwned
 	call BattleNowSetPokedexEntries
@@ -115,11 +99,3 @@ BattleNowSetPokedexEntries:
 	jr nz, .loop
 	ld [hl], %01111111
 	ret
-
-
-BattleNowItemsList:
-	db FULL_RESTORE, 99
-	db RARE_CANDY, 99
-	db MAX_REVIVE, 99
-	db PP_UP, 99
-	db -1 ; end

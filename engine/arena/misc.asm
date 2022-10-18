@@ -145,11 +145,15 @@ NotEnoughMemoryText:
 
 StartBattleNow:
 	call BattleNowStart
+	; Move opponent team to BattleNowStart
 	ld a, OPP_RIVAL1
 	ld [wCurOpponent], a
 	ld a, $1
 	ld [wTrainerNo], a
+	; Show teams
+	; Select team order
 	call NewBattle
+	; Announce winner
 	call Init
 
 
