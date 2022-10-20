@@ -36,6 +36,7 @@ MainMenuChoicesList:
 	dw ARENA_MENU_CHOICES_LIST_END
 
 
+	nop
 Determine_MainMenuChoice_Continue:
 	; Change to displaying Continue only when the player is mid-run
 	ld a, [wSaveFileStatus]

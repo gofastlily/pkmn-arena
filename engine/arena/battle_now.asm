@@ -1,3 +1,12 @@
+StartBattleNow:
+	call BattleNowStart
+	; DELETE call ShowTeams
+	; call SelectTeamOrder
+	call NewBattle
+	; call AnnounceWinner
+	call Init
+
+
 SetBattleNowTeam:
 .loop
 	ld a, [de]

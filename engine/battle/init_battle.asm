@@ -36,6 +36,7 @@ InitBattleCommon:
 	ld [wTrainerClass], a
 	call GetTrainerInformation
 	callfar ReadTrainer
+	callfar ShowTeams
 	callfar DoBattleTransitionAndInitBattleVariables
 	call _LoadTrainerPic
 	xor a
