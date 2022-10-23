@@ -1171,35 +1171,23 @@ ChooseNextMon:
 HandlePlayerBlackOut:
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
-	jr z, .notRival1Battle
-	ld a, [wCurOpponent]
-	cp OPP_RIVAL1
-	jr nz, .notRival1Battle
-	hlcoord 0, 0  ; rival 1 battle
-	lb bc, 8, 21
-	call ClearScreenArea
-	call ScrollTrainerPicAfterBattle
-	ld c, 40
-	call DelayFrames
-	ld hl, Rival1WinText
-	call PrintText
-	ld a, [wCurMap]
-	cp OAKS_LAB
-	ret z            ; starter battle in oak's lab: don't black out
-.notRival1Battle
+	jr z, .linkBattle
+	ret z ;  starter battle in oak's lab: don't black out
+.linkBattle
 	ld b, SET_PAL_BATTLE_BLACK
 	call RunPaletteCommand
-	ld hl, PlayerBlackedOutText2
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jr nz, .noLinkBattle
 	ld hl, LinkBattleLostText
-.noLinkBattle
 	call PrintText
+.noLinkBattle
 	ld a, [wd732]
 	res 5, a
 	ld [wd732], a
 	call ClearScreen
+	ld b, SET_PAL_BATTLE
+	jp RunPaletteCommand
 	scf
 	ret
 

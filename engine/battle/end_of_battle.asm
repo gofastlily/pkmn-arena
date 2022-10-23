@@ -25,30 +25,8 @@ EndOfBattle:
 	call PlaceString
 	ld c, 200
 	call DelayFrames
-	jr .evolution
 .notLinkBattle
-	ld a, [wBattleResult]
-	and a
-	jr nz, .resetVariables
-	ld hl, wTotalPayDayMoney
-	ld a, [hli]
-	or [hl]
-	inc hl
-	or [hl]
-	jr z, .evolution ; if pay day money is 0, jump
-	ld de, wPlayerMoney + 2
-	ld c, $3
-	predef AddBCDPredef
-	ld hl, PickUpPayDayMoneyText
-	call PrintText
-.evolution
-	xor a
-	ld [wForceEvolution], a
-	predef EvolutionAfterBattle
-	ld d, $82
-	callfar UpdatePikachuMoodAfterBattle
 	callfar AnnounceWinner
-.resetVariables
 	xor a
 	ld [wLowHealthAlarm], a ;disable low health alarm
 	ld [wChannelSoundIDs + CHAN5], a

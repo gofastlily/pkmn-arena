@@ -1,12 +1,11 @@
 StartBattleNow:
 	call BattleNowStart
-	; DELETE `ShowTeams`, it's called in `init_battle.asm`
-	; though, frankly, that should be refactored at some point.
+	; It's very likely that heavy refactoring will be needed to support
+	; selecting team order.  Right now `ShowTeams` is run in `init_battle.asm`
 	; `AnnounceWinner` is likely to have the same issues.
 	; call ShowTeams
 	; call SelectTeamOrder
 	call NewBattle
-	; call AnnounceWinner
 	call Init
 
 
@@ -22,6 +21,7 @@ SetBattleNowTeam:
 	inc de
 	call AddPartyMon
 	jr .loop
+	ret
 
 
 SetBattleNowTeamR1A:
@@ -55,6 +55,11 @@ BattleNowTeamR1B:
 	db PSYDUCK, 50
 	db CUBONE, 50
 	db MEOWTH, 50
+	db -1 ; end
+
+
+BattleNowTeamDebug:
+	db MEWTWO, 100
 	db -1 ; end
 
 
@@ -184,6 +189,19 @@ BattleNowTeamMovesR1B:
 	ret
 
 
+BattleNowTeamMovesDebug:
+	ld hl, wPartyMon1Moves
+	ld a, PSYCHIC_M
+	ld [hli], a
+	ld a, THUNDERBOLT
+	ld [hli], a
+	ld a, ICE_BEAM
+	ld [hli], a
+	ld a, RECOVER
+	ld [hl], a
+	ret
+
+
 BattleNowPickTeams:
 	; Pick a random team of two
 	call Random
@@ -212,10 +230,23 @@ BattleNowStart:
 	ld a, 1 << BIT_EARTHBADGE
 	ld [wObtainedBadges], a
 
+	; Prevent blackout message, seemingly not working
+	ld a, OAKS_LAB
+	ld [wCurMap], a
+
+IF DEF(_DEBUG)
+	ld de, BattleNowTeamDebug
+	call SetBattleNowTeam
+	call BattleNowTeamMovesDebug
+	ld a, OPP_RIVAL1
+	ld [wCurOpponent], a
+	ld a, $1
+	ld [wTrainerNo], a
+ELSE
 	; Face the Rival for now
 	ld a, OPP_RIVAL3
 	ld [wCurOpponent], a
-
 	call BattleNowPickTeams
+ENDC
 
 	ret

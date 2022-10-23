@@ -244,6 +244,10 @@ ShowEnemyTeam:
 	call GetMonName
 	ld de, wcd6d
 	call PlaceString
+	; Check for end of party
+	ld a, [wEnemyPartyCount]
+	cp 1
+	jp z, .endParty
 
 	hlcoord 1, 11
 	ld a, [wEnemyMon2]
@@ -251,6 +255,10 @@ ShowEnemyTeam:
 	call GetMonName
 	ld de, wcd6d
 	call PlaceString
+	; Check for end of party
+	ld a, [wEnemyPartyCount]
+	cp 2
+	jp z, .endParty
 
 	hlcoord 1, 12
 	ld a, [wEnemyMon3]
@@ -258,6 +266,10 @@ ShowEnemyTeam:
 	call GetMonName
 	ld de, wcd6d
 	call PlaceString
+	; Check for end of party
+	ld a, [wEnemyPartyCount]
+	cp 3
+	jp z, .endParty
 
 	hlcoord 1, 13
 	ld a, [wEnemyMon4]
@@ -265,6 +277,10 @@ ShowEnemyTeam:
 	call GetMonName
 	ld de, wcd6d
 	call PlaceString
+	; Check for end of party
+	ld a, [wEnemyPartyCount]
+	cp 4
+	jp z, .endParty
 
 	hlcoord 1, 14
 	ld a, [wEnemyMon5]
@@ -272,6 +288,10 @@ ShowEnemyTeam:
 	call GetMonName
 	ld de, wcd6d
 	call PlaceString
+	; Check for end of party
+	ld a, [wEnemyPartyCount]
+	cp 5
+	jp z, .endParty
 
 	hlcoord 1, 15
 	ld a, [wEnemyMon6]
@@ -280,6 +300,7 @@ ShowEnemyTeam:
 	ld de, wcd6d
 	call PlaceString
 
+.endParty
 	ret
 
 
