@@ -173,25 +173,21 @@ DisplayContinueGameInfo:
 
 ShowTeams:
 	call ClearScreen
-	
+	call ShowPlayerTeam
+	call ShowEnemyTeam
+	call WaitForButtonPressAB
+	ret
+
+
+ShowPlayerTeam:
 	hlcoord 0, 0
 	ld b, 7
 	ld c, 18
 	call TextBoxBorder
 
-	hlcoord 0, 9
-	ld b, 7
-	ld c, 18
-	call TextBoxBorder
-
-
 	ld de, RedPicFront
 	lb bc, BANK(RedPicFront), $00
 	call DisplayPlayerPreviewPic
-	ld de, Rival1Pic
-	lb bc, BANK(Rival1Pic), $00
-	call DisplayEnemyPreviewPic
-
 
 	hlcoord 1, 7
 	ld de, BlankTrainerNameText
@@ -223,6 +219,18 @@ ShowTeams:
 	ld de, wPartyMon6Nick
 	call PlaceString
 
+	ret
+
+
+ShowEnemyTeam:
+	hlcoord 0, 9
+	ld b, 7
+	ld c, 18
+	call TextBoxBorder
+
+	ld de, Rival1Pic
+	lb bc, BANK(Rival1Pic), $00
+	call DisplayEnemyPreviewPic
 
 	hlcoord 12, 16
 	ld de, BlankTrainerNameText
@@ -272,12 +280,6 @@ ShowTeams:
 	ld de, wcd6d
 	call PlaceString
 
-
-.waitForButtonPress
-	call JoypadLowSensitivity
-	ldh a, [hJoy5]
-	and A_BUTTON | B_BUTTON
-	jr z, .waitForButtonPress
 	ret
 
 
@@ -331,3 +333,29 @@ DisplayEnemyPreviewPic:
 
 BlankTrainerNameText:
 	db "       @"
+
+
+AnnounceWinner:
+	call ClearScreen
+	; Check if the player won the battle
+	ld a, [wBattleResult]
+	cp a, $00
+	jr nz, .playerLost
+	; Player Won
+	call ShowPlayerTeam
+	jr .endAnnounce
+.playerLost
+	; Enemy Won
+	call ShowEnemyTeam
+.endAnnounce
+	call WaitForButtonPressAB
+	ret
+
+
+WaitForButtonPressAB:
+.waitForButtonPress
+	call JoypadLowSensitivity
+	ldh a, [hJoy5]
+	and A_BUTTON | B_BUTTON
+	jr z, .waitForButtonPress
+	ret

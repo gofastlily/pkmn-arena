@@ -1,6 +1,9 @@
 StartBattleNow:
 	call BattleNowStart
-	; DELETE call ShowTeams
+	; DELETE `ShowTeams`, it's called in `init_battle.asm`
+	; though, frankly, that should be refactored at some point.
+	; `AnnounceWinner` is likely to have the same issues.
+	; call ShowTeams
 	; call SelectTeamOrder
 	call NewBattle
 	; call AnnounceWinner
@@ -181,18 +184,7 @@ BattleNowTeamMovesR1B:
 	ret
 
 
-BattleNowStart:
-	xor a ; PLAYER_PARTY_DATA
-	ld [wMonDataLocation], a
-
-	; Get all badges
-	ld a, 1 << BIT_EARTHBADGE
-	ld [wObtainedBadges], a
-
-	; Face the Rival for now
-	ld a, OPP_RIVAL3
-	ld [wCurOpponent], a
-
+BattleNowPickTeams:
 	; Pick a random team of two
 	call Random
 	and %1
@@ -209,5 +201,21 @@ BattleNowStart:
 	ld [wTrainerNo], a
 	jp .teamDone
 .teamDone
+	ret
+
+
+BattleNowStart:
+	xor a ; PLAYER_PARTY_DATA
+	ld [wMonDataLocation], a
+
+	; Get all badges
+	ld a, 1 << BIT_EARTHBADGE
+	ld [wObtainedBadges], a
+
+	; Face the Rival for now
+	ld a, OPP_RIVAL3
+	ld [wCurOpponent], a
+
+	call BattleNowPickTeams
 
 	ret

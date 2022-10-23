@@ -47,6 +47,7 @@ EndOfBattle:
 	predef EvolutionAfterBattle
 	ld d, $82
 	callfar UpdatePikachuMoodAfterBattle
+	callfar AnnounceWinner
 .resetVariables
 	xor a
 	ld [wLowHealthAlarm], a ;disable low health alarm
