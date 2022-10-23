@@ -240,10 +240,7 @@ ShowEnemyTeam:
 
 	hlcoord 1, 10
 	ld a, [wEnemyMon1]
-	ld [wd11e], a
-	call GetMonName
-	ld de, wcd6d
-	call PlaceString
+	call DrawEnemyMonName
 	; Check for end of party
 	ld a, [wEnemyPartyCount]
 	cp 1
@@ -251,10 +248,7 @@ ShowEnemyTeam:
 
 	hlcoord 1, 11
 	ld a, [wEnemyMon2]
-	ld [wd11e], a
-	call GetMonName
-	ld de, wcd6d
-	call PlaceString
+	call DrawEnemyMonName
 	; Check for end of party
 	ld a, [wEnemyPartyCount]
 	cp 2
@@ -262,10 +256,7 @@ ShowEnemyTeam:
 
 	hlcoord 1, 12
 	ld a, [wEnemyMon3]
-	ld [wd11e], a
-	call GetMonName
-	ld de, wcd6d
-	call PlaceString
+	call DrawEnemyMonName
 	; Check for end of party
 	ld a, [wEnemyPartyCount]
 	cp 3
@@ -273,10 +264,7 @@ ShowEnemyTeam:
 
 	hlcoord 1, 13
 	ld a, [wEnemyMon4]
-	ld [wd11e], a
-	call GetMonName
-	ld de, wcd6d
-	call PlaceString
+	call DrawEnemyMonName
 	; Check for end of party
 	ld a, [wEnemyPartyCount]
 	cp 4
@@ -284,10 +272,7 @@ ShowEnemyTeam:
 
 	hlcoord 1, 14
 	ld a, [wEnemyMon5]
-	ld [wd11e], a
-	call GetMonName
-	ld de, wcd6d
-	call PlaceString
+	call DrawEnemyMonName
 	; Check for end of party
 	ld a, [wEnemyPartyCount]
 	cp 5
@@ -295,10 +280,7 @@ ShowEnemyTeam:
 
 	hlcoord 1, 15
 	ld a, [wEnemyMon6]
-	ld [wd11e], a
-	call GetMonName
-	ld de, wcd6d
-	call PlaceString
+	call DrawEnemyMonName
 
 .endParty
 	ret
@@ -349,6 +331,14 @@ DisplayEnemyPreviewPic:
 	xor a
 	ldh [hStartTileID], a
 	predef_jump CopyUncompressedPicToTilemap
+	ret
+
+
+DrawEnemyMonName:
+	ld [wd11e], a
+	call GetMonName
+	ld de, wcd6d
+	call PlaceString
 	ret
 
 
