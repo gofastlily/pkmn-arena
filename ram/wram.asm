@@ -2304,9 +2304,11 @@ wArenaMenuTextItems:: ds ARENA_MENU_CAPACITY * 2 + 1
 ; 0: Yes
 ; 1: No
 wArenaOptions:: db
+; bit 7 = has team been selected pre-battle
+wArenaBattleTemp:: db
 
 ; unused
-	ds 28
+	ds 27
 
 wObtainedHiddenItemsFlags:: flag_array 112
 

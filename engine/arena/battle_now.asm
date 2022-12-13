@@ -1,10 +1,15 @@
 StartBattleNow:
-	call BattleNowStart
+	call PrepBattleNow
 	; It's very likely that heavy refactoring will be needed to support
 	; selecting team order.  Right now `ShowTeams` is run in `init_battle.asm`
-	; `AnnounceWinner` is likely to have the same issues.
+	; `AnnounceWinner` is likely to have similar issues.
+	; GetTrainerInformation and ReadTrainer are seemingly the correct methods to call.
+	; callfar InitBattleVariables
+	; call GetTrainerInformation
+	; callfar ReadTrainer
 	; call ShowTeams
 	; call SelectTeamOrder
+
 	call NewBattle
 	call Init
 
@@ -60,6 +65,11 @@ BattleNowTeamR1B:
 
 BattleNowTeamDebug:
 	db MEWTWO, 100
+	db MEW, 100
+	db DRAGONITE, 100
+	db ARTICUNO, 100
+	db ZAPDOS, 100
+	db MOLTRES, 100
 	db -1 ; end
 
 
@@ -222,7 +232,7 @@ BattleNowPickTeams:
 	ret
 
 
-BattleNowStart:
+PrepBattleNow:
 	xor a ; PLAYER_PARTY_DATA
 	ld [wMonDataLocation], a
 

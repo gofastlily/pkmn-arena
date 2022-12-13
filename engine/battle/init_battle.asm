@@ -1,4 +1,7 @@
 InitBattle::
+	; Clear battle temp values
+	xor a
+	ld [wArenaBattleTemp], a
 	ld a, [wCurOpponent]
 	and a
 	jr z, DetermineWildOpponent
@@ -36,7 +39,12 @@ InitBattleCommon:
 	ld [wTrainerClass], a
 	call GetTrainerInformation
 	callfar ReadTrainer
+
 	callfar ShowTeams
+	ld a, [wArenaBattleTemp]
+	bit 7, a
+	jp z, PickTeamsFromRoster
+
 	callfar DoBattleTransitionAndInitBattleVariables
 	call _LoadTrainerPic
 	xor a
@@ -282,3 +290,45 @@ CopyUncompressedPicToHL::
 	dec b
 	jr nz, .flippedLoop
 	ret
+
+
+TeamSelectionEnemyPartyPokeballs:
+	; call PlaceEnemyHUDTiles
+	ld hl, wEnemyMons
+	; Party count of three
+	ld d, 0
+	ld e, 3
+	call SetupPokeballs
+	ld hl, wBaseCoordX
+	ld a, $48
+	ld [hli], a
+	ld [hl], $20
+	ld a, -8
+	ld [wHUDPokeballGfxOffsetX], a
+	ld a, $1
+	ld [wdef5], a
+	ld hl, wShadowOAMSprite06
+	jp WritePokeballOAMData
+
+
+PickTeamsFromRoster:
+	; pick battle team from roster
+
+	; Draw three pokeballs under enemy team
+	; DrawAllPokeballs?
+	; Draw enemy pokeballs
+	; ld a, 16
+	; ld [wBaseCoordY], a
+	; ld a, 1
+	; ld [wBaseCoordX], a
+	; farcall LoadPartyPokeballGfx
+	; jp TeamSelectionEnemyPartyPokeballs
+
+	; Pick three from team
+
+	; Mark team as selected
+	ld a, [wArenaBattleTemp]
+	set 7, a
+	ld [wArenaBattleTemp], a
+	; loop back to InitBattleCommon
+	jp InitBattleCommon

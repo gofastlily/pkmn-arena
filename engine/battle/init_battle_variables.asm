@@ -35,4 +35,8 @@ InitBattleVariables:
 	ld a, BATTLE_TYPE_SAFARI
 	ld [wBattleType], a
 .notSafariBattle
+	ld a, [wArenaBattleTemp]
+	bit 7, a
+	jp nz, .end
 	jpfar PlayBattleMusic
+.end
