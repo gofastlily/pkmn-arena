@@ -175,7 +175,6 @@ ShowTeams:
 	call ClearScreen
 	call ShowPlayerTeam
 	call ShowEnemyTeam
-	call WaitForButtonPressAB
 	ret
 
 

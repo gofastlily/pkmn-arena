@@ -1,15 +1,6 @@
 StartBattleNow:
 	call PrepBattleNow
-	; It's very likely that heavy refactoring will be needed to support
-	; selecting team order.  Right now `ShowTeams` is run in `init_battle.asm`
-	; `AnnounceWinner` is likely to have similar issues.
-	; GetTrainerInformation and ReadTrainer are seemingly the correct methods to call.
-	; callfar InitBattleVariables
-	; call GetTrainerInformation
-	; callfar ReadTrainer
-	; call ShowTeams
-	; call SelectTeamOrder
-
+	predef HealParty
 	call NewBattle
 	call Init
 

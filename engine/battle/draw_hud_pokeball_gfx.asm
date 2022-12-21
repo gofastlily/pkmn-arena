@@ -198,3 +198,10 @@ SetupPlayerAndEnemyPokeballs:
 PokeballTileGraphics::
 	INCBIN "gfx/battle/balls.2bpp"
 PokeballTileGraphicsEnd:
+
+
+ArenaLoadPartyPokeballGfx:
+	ld de, PokeballTileGraphics
+	ld hl, vChars1 tile $40
+	lb bc, BANK(PokeballTileGraphics), (PokeballTileGraphicsEnd - PokeballTileGraphics) / $10
+	jp CopyVideoData

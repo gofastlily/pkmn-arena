@@ -2304,11 +2304,26 @@ wArenaMenuTextItems:: ds ARENA_MENU_CAPACITY * 2 + 1
 ; 0: Yes
 ; 1: No
 wArenaOptions:: db
+
+; Temp storage for battles
 ; bit 7 = has team been selected pre-battle
 wArenaBattleTemp:: db
 
+; Temp storage for roster selection
+wArenaRosterTargetCount:: db
+wArenaRosterCountPlayer:: db
+wArenaRosterCountCpu:: db
+wArenaRosterTimerCpu:: db
+wArenaRosterCursorLocationY:: db
+
+
+; Team order when picking team for battles
+; six four-bit values
+wArenaRosterOrder:: ds 3
+
+
 ; unused
-	ds 27
+	ds 19
 
 wObtainedHiddenItemsFlags:: flag_array 112
 
