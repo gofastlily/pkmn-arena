@@ -696,6 +696,8 @@ HandleRosterInput:
 	jr nz, .bPressed
 	bit BIT_A_BUTTON, a
 	jr nz, .aPressed
+	bit BIT_SELECT, a
+	jr nz, .selectPressed
 	bit BIT_D_DOWN, a
 	jr nz, .downPressed
 	bit BIT_D_UP, a
@@ -709,6 +711,9 @@ HandleRosterInput:
 	ret
 .bPressed
 	call RemoveFromRoster
+	ret
+.selectPressed
+	call ShowStatus
 	ret
 .downPressed
 	ld a, [wArenaRosterCursorLocationY]
@@ -1119,4 +1124,19 @@ SwapRosterOrderCpu:
 	ld e, a
 	ld a, c
 	call SetValueToRosterCpu
+	ret
+
+
+ShowStatus:
+	ld a, [wArenaRosterCursorLocationY]
+	ld [wWhichPokemon], a
+	call SaveScreenTilesToBuffer1
+	xor a ; PLAYER_PARTY_DATA
+	ld [wMonDataLocation], a
+	predef StatusScreen
+	predef StatusScreen2
+	call LoadScreenTilesFromBuffer1
+	call ReloadTilesetTilePatterns
+	call RunDefaultPaletteCommand
+	call LoadGBPal
 	ret
