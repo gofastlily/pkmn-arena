@@ -461,6 +461,9 @@ TeamSelectionEnemyPartyPokeballs:
 
 TeamSelectionPlayerTeamCallouts:
 
+	ld c, 0
+	call SetRosterNumberHLCoord
+	ld [hl], " "
 	ld c, 1
 	call SetRosterNumberHLCoord
 	ld [hl], " "
@@ -474,9 +477,6 @@ TeamSelectionPlayerTeamCallouts:
 	call SetRosterNumberHLCoord
 	ld [hl], " "
 	ld c, 5
-	call SetRosterNumberHLCoord
-	ld [hl], " "
-	ld c, 6
 	call SetRosterNumberHLCoord
 	ld [hl], " "
 
@@ -883,7 +883,8 @@ AlreadyInRoster:
 	jp z, .inRoster
 
 	ld a, [wArenaRosterOrder]
-	and a, $70
+	swap a
+	and a, $7
 	ld b, a
 	ld a, d
 	cp b
@@ -897,7 +898,8 @@ AlreadyInRoster:
 	jp z, .inRoster
 
 	ld a, [wArenaRosterOrder+1]
-	and a, $70
+	swap a
+	and a, $7
 	ld b, a
 	ld a, d
 	cp b
@@ -911,62 +913,8 @@ AlreadyInRoster:
 	jp z, .inRoster
 
 	ld a, [wArenaRosterOrder+2]
-	and a, $70
-	ld b, a
-	ld a, d
-	cp b
-	jp z, .inRoster
-
-.notInRoster
-	xor a
-	jr .end
-.inRoster
-	ld a, 1
-.end
-	cp 1
-	ret
-
-
-AlreadyInRosterCpu:
-	ld d, a
-
-	ld a, [wArenaRosterOrderCpu]
+	swap a
 	and a, $7
-	ld b, a
-	ld a, d
-	cp b
-	jp z, .inRoster
-
-	ld a, [wArenaRosterOrderCpu]
-	and a, $70
-	ld b, a
-	ld a, d
-	cp b
-	jp z, .inRoster
-
-	ld a, [wArenaRosterOrderCpu+1]
-	and a, $7
-	ld b, a
-	ld a, d
-	cp b
-	jp z, .inRoster
-
-	ld a, [wArenaRosterOrderCpu+1]
-	and a, $70
-	ld b, a
-	ld a, d
-	cp b
-	jp z, .inRoster
-
-	ld a, [wArenaRosterOrderCpu+2]
-	and a, $7
-	ld b, a
-	ld a, d
-	cp b
-	jp z, .inRoster
-
-	ld a, [wArenaRosterOrderCpu+2]
-	and a, $70
 	ld b, a
 	ld a, d
 	cp b

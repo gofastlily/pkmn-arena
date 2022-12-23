@@ -205,7 +205,7 @@ BattleNowTeamMovesDebug:
 
 BattleNowPickTeams:
 	; Pick a random team of two
-	call Random
+	callfar Random
 	and %1
 	jp nz, .teamB
 	call SetBattleNowTeamR1A
