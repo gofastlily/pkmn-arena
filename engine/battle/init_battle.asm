@@ -2,12 +2,20 @@ InitBattle::
 	; Clear battle temp values
 	xor a
 	ld [wArenaBattleTemp], a
+	ld [wArenaBattleTemp2], a
 	ld [wArenaRosterCountPlayer], a
 	ld [wArenaRosterCountCpu], a
 	ld [wArenaRosterTimerCpu], a
 	ld [wArenaRosterCursorLocationY], a
-	ld a, 3
+	ld a, 6
 	ld [wArenaRosterTargetCount], a
+	ld a, $77
+	ld [wArenaRosterOrder], a
+	ld [wArenaRosterOrder+1], a
+	ld [wArenaRosterOrder+2], a
+	ld [wArenaRosterOrderCpu], a
+	ld [wArenaRosterOrderCpu+1], a
+	ld [wArenaRosterOrderCpu+2], a
 
 	ld a, [wCurOpponent]
 	and a
@@ -50,7 +58,6 @@ InitBattleCommon:
 	callfar ReadTrainer
 
 	callfar ShowTeams
-	; callfar WaitForButtonPressAB
 	ld a, [wArenaBattleTemp]
 	bit 7, a
 	jp z, PickTeamsFromRoster
@@ -411,12 +418,6 @@ TeamSelectionPlayerPartyPokeballs:
 
 
 TeamSelectionEnemyPartyPokeballs:
-	; ld a, [wArenaRosterCountCpu]
-	; dec a
-	; ld b, a
-	; ld a, [wArenaRosterTargetCount]
-	; cp b
-	; ret c
 	ld a, [wArenaRosterCountCpu]
 	cp 1
 	jr z, .enemyRosterOne
@@ -458,6 +459,84 @@ TeamSelectionEnemyPartyPokeballs:
 	ret
 
 
+TeamSelectionPlayerTeamCallouts:
+
+	ld c, 1
+	call SetRosterNumberHLCoord
+	ld [hl], " "
+	ld c, 2
+	call SetRosterNumberHLCoord
+	ld [hl], " "
+	ld c, 3
+	call SetRosterNumberHLCoord
+	ld [hl], " "
+	ld c, 4
+	call SetRosterNumberHLCoord
+	ld [hl], " "
+	ld c, 5
+	call SetRosterNumberHLCoord
+	ld [hl], " "
+	ld c, 6
+	call SetRosterNumberHLCoord
+	ld [hl], " "
+
+	ld a, [wArenaRosterCountPlayer]
+	cp 1
+	jr z, .playerRosterCalloutOne
+	cp 2
+	jr z, .playerRosterCalloutTwo
+	cp 3
+	jr z, .playerRosterCalloutThree
+	cp 4
+	jr z, .playerRosterCalloutFour
+	cp 5
+	jr z, .playerRosterCalloutFive
+	cp 6
+	jr z, .playerRosterCalloutSix
+	ret
+
+.playerRosterCalloutSix
+	ld a, [wArenaRosterOrder+2]
+	and $70
+	swap a
+	ld c, a
+	call SetRosterNumberHLCoord
+	ld [hl], "6"
+.playerRosterCalloutFive
+	ld a, [wArenaRosterOrder+2]
+	and $7
+	ld c, a
+	call SetRosterNumberHLCoord
+	ld [hl], "5"
+.playerRosterCalloutFour
+	ld a, [wArenaRosterOrder+1]
+	and $70
+	swap a
+	ld c, a
+	call SetRosterNumberHLCoord
+	ld [hl], "4"
+.playerRosterCalloutThree
+	ld a, [wArenaRosterOrder+1]
+	and $7
+	ld c, a
+	call SetRosterNumberHLCoord
+	ld [hl], "3"
+.playerRosterCalloutTwo
+	ld a, [wArenaRosterOrder]
+	and $70
+	swap a
+	ld c, a
+	call SetRosterNumberHLCoord
+	ld [hl], "2"
+.playerRosterCalloutOne
+	ld a, [wArenaRosterOrder]
+	and $7
+	ld c, a
+	call SetRosterNumberHLCoord
+	ld [hl], "1"
+	ret
+
+
 PickTeamsFromRoster:
 	callfar ArenaLoadPartyPokeballGfx
 
@@ -471,7 +550,6 @@ PickTeamsFromRoster:
 	ld a, [wArenaRosterCountCpu]
 	cp b
 	jp z, .skipEnemyRosterPokeball
-
 	ld a, [wArenaRosterTimerCpu]
 	ld b, a
 	add a, 1
@@ -492,8 +570,9 @@ PickTeamsFromRoster:
 	ld a, 6
 	call UpdateRosterCursorPosition
 
-	; Draw pokéballs
+	; Draw pokéballs and callouts
 	call TeamSelectionPlayerPartyPokeballs
+	call TeamSelectionPlayerTeamCallouts
 	call TeamSelectionEnemyPartyPokeballs
 
 	callfar DelayFrame
@@ -503,8 +582,70 @@ PickTeamsFromRoster:
 	cp b
 	jp nz, .pickRosterLoop
 
-	; Switch to Y/N prompt?
-	callfar WaitForButtonPressAB
+.rosterPromptLoop
+	ld hl, IsThisTeamOkayText
+	call PrintText
+	hlcoord 14, 7
+	lb bc, 8, 15
+	xor a ; YES_NO_MENU
+	ld [wTwoOptionMenuID], a
+	ld a, TWO_OPTION_MENU
+	ld [wTextBoxID], a
+	call DisplayTextBoxID
+	ld a, [wCurrentMenuItem]
+	and a
+	jp z, .endRosterPromptLoop
+
+	ld a, [wArenaRosterOrder+2]
+	and $7
+	ld [wArenaRosterOrder+2], a
+	ld a, [wArenaRosterCountPlayer]
+	dec a
+	ld [wArenaRosterCountPlayer], a
+	callfar ShowTeams
+	jp .pickRosterLoop
+
+.endRosterPromptLoop
+
+	; Actually pick the enemy team at the last possible moment
+	; Randomly pick the opponent's team
+
+	; prepopulate list
+	ld a, $10
+	ld [wArenaRosterOrderCpu], a
+	ld a, $32
+	ld [wArenaRosterOrderCpu+1], a
+	ld a, $54
+	ld [wArenaRosterOrderCpu+2], a
+
+	; todo:
+	; - implement outer loop
+	;   wArenaBattleTemp lower bits
+	;   $F8 - 11111000
+	;   $07 - 00000111
+	; - variable length shuffle support
+
+	; for i in range(0, 4):
+	ld a, [wArenaBattleTemp2]
+.rosterRandLoop
+	ld b, a
+	;     j = random.random(i, 5)
+	ld a, 5  ; make dynamic
+	call RandomRange
+	;     if i != j:
+	cp b
+	jr z, .indicesAreEqual
+	;         a[i], a[j] = a[j], a[i]
+	ld c, a
+	call SwapRosterOrderCpu
+
+.indicesAreEqual
+
+	ld a, [wArenaBattleTemp2]
+	inc a
+	ld [wArenaBattleTemp2], a
+	cp 5  ; make dynamic
+	jr c, .rosterRandLoop
 
 	; Mark team as selected
 	ld a, [wArenaBattleTemp]
@@ -513,6 +654,14 @@ PickTeamsFromRoster:
 	; loop back to InitBattleCommon
 	jp InitBattleCommon
 
+
+IsThisTeamOkayText:
+	text_far _IsThisTeamOkayText
+	text_end
+
+_IsThisTeamOkayText::
+	text "Is this team okay?"
+	done
 
 UpdateRosterCursorPosition:
 	hlcoord 8, 1
@@ -553,6 +702,9 @@ HandleRosterInput:
 	jr nz, .upPressed
 	ret
 .aPressed
+	ld a, [wArenaRosterCursorLocationY]
+	call AlreadyInRoster
+	ret z
 	call AddToRoster
 	ret
 .bPressed
@@ -604,6 +756,7 @@ AddToRoster:
 	ld a, [wArenaRosterCursorLocationY]
 	ld b, a
 	ld a, [wArenaRosterOrder]
+	and $70
 	add b
 	ld [wArenaRosterOrder], a
 	ret
@@ -612,6 +765,7 @@ AddToRoster:
 	ld a, [wArenaRosterCursorLocationY]
 	ld b, a
 	ld a, [wArenaRosterOrder]
+	and $7
 	swap a
 	add b
 	swap a
@@ -622,6 +776,7 @@ AddToRoster:
 	ld a, [wArenaRosterCursorLocationY]
 	ld b, a
 	ld a, [wArenaRosterOrder+1]
+	and $70
 	add b
 	ld [wArenaRosterOrder+1], a
 	ret
@@ -630,6 +785,7 @@ AddToRoster:
 	ld a, [wArenaRosterCursorLocationY]
 	ld b, a
 	ld a, [wArenaRosterOrder+1]
+	and $7
 	swap a
 	add b
 	swap a
@@ -640,6 +796,7 @@ AddToRoster:
 	ld a, [wArenaRosterCursorLocationY]
 	ld b, a
 	ld a, [wArenaRosterOrder+2]
+	and $70
 	add b
 	ld [wArenaRosterOrder+2], a
 	ret
@@ -648,6 +805,7 @@ AddToRoster:
 	ld a, [wArenaRosterCursorLocationY]
 	ld b, a
 	ld a, [wArenaRosterOrder+2]
+	and $7
 	swap a
 	add b
 	swap a
@@ -673,66 +831,344 @@ RemoveFromRoster:
 	jr z, .removeSix
 	jr .end
 .removeOne
-	; 1 sub
 	ld a, [wArenaRosterOrder]
-	and a, $7
-	ld b, a
-	ld a, [wArenaRosterOrder]
-	sub b
+	and a, $70
+	add $7
 	ld [wArenaRosterOrder], a
 	jr .end
 .removeTwo
-	; 2 swap mask swap sub
 	ld a, [wArenaRosterOrder]
-	swap a
 	and a, $7
-	swap a
-	ld b, a
-	ld a, [wArenaRosterOrder]
-	sub b
+	add $70
 	ld [wArenaRosterOrder], a
 	jr .end
 .removeThree
-	; 3 index+1 sub
 	ld a, [wArenaRosterOrder+1]
-	and a, $7
-	ld b, a
-	ld a, [wArenaRosterOrder+1]
-	sub b
+	and a, $70
+	add $7
 	ld [wArenaRosterOrder+1], a
 	jr .end
 .removeFour
-	; 4 index+1 swap mask swap sub
 	ld a, [wArenaRosterOrder+1]
-	swap a
 	and a, $7
-	swap a
-	ld b, a
-	ld a, [wArenaRosterOrder+1]
-	sub b
+	add $70
 	ld [wArenaRosterOrder+1], a
 	jr .end
 .removeFive
-	; 5 index+2 sub
 	ld a, [wArenaRosterOrder+2]
-	and a, $7
-	ld b, a
-	ld a, [wArenaRosterOrder+2]
-	sub b
+	and a, $70
+	add $7
 	ld [wArenaRosterOrder+2], a
 	jr .end
 .removeSix
-	; 6 index+2 swap mask swap sub
 	ld a, [wArenaRosterOrder+2]
-	swap a
 	and a, $7
-	swap a
-	ld b, a
-	ld a, [wArenaRosterOrder+2]
-	sub b
+	add $70
 	ld [wArenaRosterOrder+2], a
 .end
 	ld a, [wArenaRosterCountPlayer]
 	dec a
 	ld [wArenaRosterCountPlayer], a
+	ret
+
+
+AlreadyInRoster:
+	ld d, a
+
+	ld a, [wArenaRosterOrder]
+	and a, $7
+	ld b, a
+	ld a, d
+	cp b
+	jp z, .inRoster
+
+	ld a, [wArenaRosterOrder]
+	and a, $70
+	ld b, a
+	ld a, d
+	cp b
+	jp z, .inRoster
+
+	ld a, [wArenaRosterOrder+1]
+	and a, $7
+	ld b, a
+	ld a, d
+	cp b
+	jp z, .inRoster
+
+	ld a, [wArenaRosterOrder+1]
+	and a, $70
+	ld b, a
+	ld a, d
+	cp b
+	jp z, .inRoster
+
+	ld a, [wArenaRosterOrder+2]
+	and a, $7
+	ld b, a
+	ld a, d
+	cp b
+	jp z, .inRoster
+
+	ld a, [wArenaRosterOrder+2]
+	and a, $70
+	ld b, a
+	ld a, d
+	cp b
+	jp z, .inRoster
+
+.notInRoster
+	xor a
+	jr .end
+.inRoster
+	ld a, 1
+.end
+	cp 1
+	ret
+
+
+AlreadyInRosterCpu:
+	ld d, a
+
+	ld a, [wArenaRosterOrderCpu]
+	and a, $7
+	ld b, a
+	ld a, d
+	cp b
+	jp z, .inRoster
+
+	ld a, [wArenaRosterOrderCpu]
+	and a, $70
+	ld b, a
+	ld a, d
+	cp b
+	jp z, .inRoster
+
+	ld a, [wArenaRosterOrderCpu+1]
+	and a, $7
+	ld b, a
+	ld a, d
+	cp b
+	jp z, .inRoster
+
+	ld a, [wArenaRosterOrderCpu+1]
+	and a, $70
+	ld b, a
+	ld a, d
+	cp b
+	jp z, .inRoster
+
+	ld a, [wArenaRosterOrderCpu+2]
+	and a, $7
+	ld b, a
+	ld a, d
+	cp b
+	jp z, .inRoster
+
+	ld a, [wArenaRosterOrderCpu+2]
+	and a, $70
+	ld b, a
+	ld a, d
+	cp b
+	jp z, .inRoster
+
+.notInRoster
+	xor a
+	jr .end
+.inRoster
+	ld a, 1
+.end
+	cp 1
+	ret
+
+
+GetValueFromRosterCpu:
+	; get a value from the roster by index (a)
+	cp 0
+	jp z, .indexZero
+	cp 1
+	jp z, .indexOne
+	cp 2
+	jp z, .indexTwo
+	cp 3
+	jp z, .indexThree
+	cp 4
+	jp z, .indexFour
+	cp 5
+	jp z, .indexFive
+	ret
+.indexZero
+	ld a, [wArenaRosterOrderCpu]
+	and $7
+	ret
+.indexOne
+	ld a, [wArenaRosterOrderCpu]
+	swap a
+	and $7
+	ret
+.indexTwo
+	ld a, [wArenaRosterOrderCpu+1]
+	and $7
+	ret
+.indexThree
+	ld a, [wArenaRosterOrderCpu+1]
+	swap a
+	and $7
+	ret
+.indexFour
+	ld a, [wArenaRosterOrderCpu+2]
+	and $7
+	ret
+.indexFive
+	ld a, [wArenaRosterOrderCpu+2]
+	swap a
+	and $7
+	ret
+
+
+SetValueToRosterCpu:
+	; set a value (e) from the roster by index (a)
+	cp 0
+	jp z, .indexZero
+	cp 1
+	jp z, .indexOne
+	cp 2
+	jp z, .indexTwo
+	cp 3
+	jp z, .indexThree
+	cp 4
+	jp z, .indexFour
+	cp 5
+	jp z, .indexFive
+	ret
+.indexZero
+	; 0 add
+	ld a, [wArenaRosterOrderCpu]
+	and $70
+	add e
+	ld [wArenaRosterOrderCpu], a
+	ret
+.indexOne
+	; 1 swap add swap
+	ld a, [wArenaRosterOrderCpu]
+	and $7
+	swap a
+	add e
+	swap a
+	ld [wArenaRosterOrderCpu], a
+	ret
+.indexTwo
+	; 2 index+1 add
+	ld a, [wArenaRosterOrderCpu+1]
+	and $70
+	add e
+	ld [wArenaRosterOrderCpu+1], a
+	ret
+.indexThree
+	; 3 index+1 swap add swap
+	ld a, [wArenaRosterOrderCpu+1]
+	and $7
+	swap a
+	add e
+	swap a
+	ld [wArenaRosterOrderCpu+1], a
+	ret
+.indexFour
+	; 4 index+2 add
+	ld a, [wArenaRosterOrderCpu+2]
+	and $70
+	add e
+	ld [wArenaRosterOrderCpu+2], a
+	ret
+.indexFive
+	; 5 index+2 swap add swap
+	ld a, [wArenaRosterOrderCpu+2]
+	and $7
+	swap a
+	add e
+	swap a
+	ld [wArenaRosterOrderCpu+2], a
+	ret
+
+
+SetRosterNumberHLCoord:
+	; Recreate hlcoords with variable y support
+	; y is c
+	ld a, c
+	inc a
+	; x is hardcoded
+	; multiply y by SCREEN_WIDTH
+	ld b, a
+rept SCREEN_WIDTH - 1
+	add a, b
+endr
+	; add to x
+	add a, 7
+	; load wTileMap into hl and add the y value
+	ld hl, wTileMap
+	ld e, a
+	ld d, 0
+	add hl, de
+	ret
+
+
+RandomRange::
+	; Return a random number between 0 and a (non-inclusive).
+	push bc
+	ld c, a
+
+	; b = $100 % c
+	xor a
+	sub c
+.mod
+	sub c
+	jr nc, .mod
+	add c
+	ld b, a
+
+	; Get a random number
+	; from 0 to $ff - b.
+	push bc
+.loop
+	call Random
+	ldh a, [hRandomAdd]
+	ld c, a
+	add b
+	jr c, .loop
+	ld a, c
+	pop bc
+
+	call SimpleDivide
+
+	pop bc
+	ret
+
+SimpleDivide::
+	; Divide a by c. Return quotient b and remainder a.
+	ld b, 0
+.loop
+	inc b
+	sub c
+	jr nc, .loop
+	dec b
+	add c
+	ret
+
+SwapRosterOrderCpu:
+	; wArenaRosterOrderCpu = arr
+	; b = i
+	; c = j
+	; arr[i], arr[j] = arr[j], arr[i]
+	ld a, b
+	call GetValueFromRosterCpu
+	ld d, a
+	ld a, c
+	call GetValueFromRosterCpu
+	ld e, a
+	ld a, b
+	call SetValueToRosterCpu
+	ld a, d
+	ld e, a
+	ld a, c
+	call SetValueToRosterCpu
 	ret
