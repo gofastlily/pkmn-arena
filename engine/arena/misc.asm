@@ -197,27 +197,52 @@ ShowPlayerTeam:
 	hlcoord 9, 1
 	ld de, wPartyMon1Nick
 	call PlaceString
+	; Check for end of party
+	ld a, [wPartyCount]
+	cp 1
+	jp z, .endParty
 
 	hlcoord 9, 2
 	ld de, wPartyMon2Nick
 	call PlaceString
+	; Check for end of party
+	ld a, [wPartyCount]
+	cp 2
+	jp z, .endParty
 
 	hlcoord 9, 3
 	ld de, wPartyMon3Nick
 	call PlaceString
+	; Check for end of party
+	ld a, [wPartyCount]
+	cp 3
+	jp z, .endParty
 
 	hlcoord 9, 4
 	ld de, wPartyMon4Nick
 	call PlaceString
+	; Check for end of party
+	ld a, [wPartyCount]
+	cp 4
+	jp z, .endParty
 
 	hlcoord 9, 5
 	ld de, wPartyMon5Nick
 	call PlaceString
+	; Check for end of party
+	ld a, [wPartyCount]
+	cp 5
+	jp z, .endParty
 
 	hlcoord 9, 6
 	ld de, wPartyMon6Nick
 	call PlaceString
+	; Check for end of party
+	ld a, [wPartyCount]
+	cp 6
+	jp z, .endParty
 
+.endParty
 	ret
 
 
