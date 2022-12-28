@@ -184,6 +184,7 @@ SpecialTrainerMoves:
 	db 6, 2, METRONOME
 	db 6, 3, THUNDER
 	db 6, 4, MEGA_PUNCH
+	db 0
 
 	; Arena Battle Now Round 1 B
 	db RIVAL3, 5
@@ -211,5 +212,6 @@ SpecialTrainerMoves:
 	db 6, 2, GROWL
 	db 6, 3, THUNDER
 	db 6, 4, TAKE_DOWN
+	db 0
 
 	db -1 ; end

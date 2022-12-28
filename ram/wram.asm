@@ -2308,8 +2308,9 @@ wArenaOptions:: db
 ; Temp storage for battles
 ; bit 7 = has team been selected pre-battle
 wArenaBattleTemp:: db
-; counter for pre-battle enemy roster selection
-wArenaBattleTemp2:: db
+; counters for pre-battle enemy roster selection
+wArenaBattleTempCpuRosterIndex:: db
+wArenaBattleTempCpuRosterValue:: db
 
 ; Temp storage for roster selection
 wArenaRosterTargetCount:: db
@@ -2323,10 +2324,11 @@ wArenaRosterCursorLocationY:: db
 ; six four-bit values
 wArenaRosterOrder:: ds 3
 wArenaRosterOrderCpu:: ds 3
+wArenaTrainerTeamLocation:: ds 2
 
 
 ; unused
-	ds 15
+	ds 12
 
 wObtainedHiddenItemsFlags:: flag_array 112
 

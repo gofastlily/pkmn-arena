@@ -2,12 +2,13 @@ InitBattle::
 	; Clear battle temp values
 	xor a
 	ld [wArenaBattleTemp], a
-	ld [wArenaBattleTemp2], a
+	ld [wArenaBattleTempCpuRosterIndex], a
+	ld [wArenaBattleTempCpuRosterValue], a
 	ld [wArenaRosterCountPlayer], a
 	ld [wArenaRosterCountCpu], a
 	ld [wArenaRosterTimerCpu], a
 	ld [wArenaRosterCursorLocationY], a
-	ld a, 6
+	ld a, 3
 	ld [wArenaRosterTargetCount], a
 	ld a, $77
 	ld [wArenaRosterOrder], a
@@ -55,7 +56,16 @@ InitBattleCommon:
 	jp c, InitWildBattle
 	ld [wTrainerClass], a
 	call GetTrainerInformation
+
+	ld a, [wArenaBattleTemp]
+	bit 7, a
+	cp 0
+	jp nz, .arenaRead
 	callfar ReadTrainer
+	jr .readDone
+.arenaRead
+	callfar ArenaReadTrainer
+.readDone
 
 	callfar ShowTeams
 	ld a, [wArenaBattleTemp]
@@ -460,7 +470,7 @@ TeamSelectionEnemyPartyPokeballs:
 
 
 TeamSelectionPlayerTeamCallouts:
-
+.clearCallouts
 	ld c, 0
 	call SetRosterNumberHLCoord
 	ld [hl], " "
@@ -479,7 +489,7 @@ TeamSelectionPlayerTeamCallouts:
 	ld c, 5
 	call SetRosterNumberHLCoord
 	ld [hl], " "
-
+.calloutJumpTable
 	ld a, [wArenaRosterCountPlayer]
 	cp 1
 	jr z, .playerRosterCalloutOne
@@ -494,7 +504,6 @@ TeamSelectionPlayerTeamCallouts:
 	cp 6
 	jr z, .playerRosterCalloutSix
 	ret
-
 .playerRosterCalloutSix
 	ld a, [wArenaRosterOrder+2]
 	and $70
@@ -607,51 +616,13 @@ PickTeamsFromRoster:
 
 .endRosterPromptLoop
 
-	; Actually pick the enemy team at the last possible moment
-	; Randomly pick the opponent's team
-
-	; prepopulate list
-	ld a, $10
-	ld [wArenaRosterOrderCpu], a
-	ld a, $32
-	ld [wArenaRosterOrderCpu+1], a
-	ld a, $54
-	ld [wArenaRosterOrderCpu+2], a
-
-	; todo:
-	; - implement outer loop
-	;   wArenaBattleTemp lower bits
-	;   $F8 - 11111000
-	;   $07 - 00000111
-	; - variable length shuffle support
-
-	; for i in range(0, 4):
-	ld a, [wArenaBattleTemp2]
-.rosterRandLoop
-	ld b, a
-	;     j = random.random(i, 5)
-	ld a, 5  ; make dynamic
-	call RandomRange
-	;     if i != j:
-	cp b
-	jr z, .indicesAreEqual
-	;         a[i], a[j] = a[j], a[i]
-	ld c, a
-	call SwapRosterOrderCpu
-
-.indicesAreEqual
-
-	ld a, [wArenaBattleTemp2]
-	inc a
-	ld [wArenaBattleTemp2], a
-	cp 5  ; make dynamic
-	jr c, .rosterRandLoop
+	call ShuffleOpponentRoster
 
 	; Mark team as selected
 	ld a, [wArenaBattleTemp]
 	set 7, a
 	ld [wArenaBattleTemp], a
-	; loop back to InitBattleCommon
+	call LoadPlayerRoster
 	jp InitBattleCommon
 
 
@@ -1096,6 +1067,7 @@ RandomRange::
 	pop bc
 	ret
 
+
 SimpleDivide::
 	; Divide a by c. Return quotient b and remainder a.
 	ld b, 0
@@ -1106,6 +1078,7 @@ SimpleDivide::
 	dec b
 	add c
 	ret
+
 
 SwapRosterOrderCpu:
 	; wArenaRosterOrderCpu = arr
@@ -1140,3 +1113,107 @@ ShowStatus:
 	call RunDefaultPaletteCommand
 	call LoadGBPal
 	ret
+
+
+LoadPlayerRoster:
+	xor a
+	ld [wWhichPokemon], a
+REPT 6
+	call ForceDeposit
+ENDR
+
+	ld a, [wArenaRosterOrder]
+	and $7
+	ld [wWhichPokemon], a
+	call ForceWithdraw
+	ld a, [wArenaRosterTargetCount]
+	cp 1
+	jp z, .end
+
+	ld a, [wArenaRosterOrder]
+	swap a
+	and $7
+	ld [wWhichPokemon], a
+	call ForceWithdraw
+	ld a, [wArenaRosterTargetCount]
+	cp 2
+	jp z, .end
+
+	ld a, [wArenaRosterOrder+1]
+	and $7
+	ld [wWhichPokemon], a
+	call ForceWithdraw
+	ld a, [wArenaRosterTargetCount]
+	cp 3
+	jp z, .end
+
+	ld a, [wArenaRosterOrder+1]
+	swap a
+	and $7
+	ld [wWhichPokemon], a
+	call ForceWithdraw
+	ld a, [wArenaRosterTargetCount]
+	cp 4
+	jp z, .end
+
+	ld a, [wArenaRosterOrder+2]
+	and $7
+	ld [wWhichPokemon], a
+	call ForceWithdraw
+	ld a, [wArenaRosterTargetCount]
+	cp 5
+	jp z, .end
+
+	ld a, [wArenaRosterOrder+2]
+	swap a
+	and $7
+	ld [wWhichPokemon], a
+	call ForceWithdraw
+
+.end
+	ret
+
+
+ForceDeposit:
+	; ld [wWhichPokemon], 0
+	ld a, PARTY_TO_BOX
+	ld [wMoveMonType], a
+	call MoveMon
+	xor a
+	ld [wRemoveMonFromBox], a
+	call RemovePokemon
+	ret
+
+
+ForceWithdraw:
+	; ld [wWhichPokemon], 0
+	xor a  ; BOX_TO_PARTY
+	ld [wMoveMonType], a
+	call MoveMon
+	ret
+
+
+ShuffleOpponentRoster:
+	; Prepopulate list for opponent team
+	ld a, $10
+	ld [wArenaRosterOrderCpu], a
+	ld a, $32
+	ld [wArenaRosterOrderCpu+1], a
+	ld a, $54
+	ld [wArenaRosterOrderCpu+2], a
+	; Shuffle opponent team selection
+	ld a, [wArenaBattleTempCpuRosterIndex]
+.rosterRandLoop
+	ld b, a
+	ld a, 5
+	call RandomRange
+	cp b
+	jr z, .indicesAreEqual
+	ld c, a
+	call SwapRosterOrderCpu
+.indicesAreEqual
+	ld a, [wArenaBattleTempCpuRosterIndex]
+	inc a
+	ld [wArenaBattleTempCpuRosterIndex], a
+	cp 5
+	jr c, .rosterRandLoop

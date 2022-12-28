@@ -86,14 +86,14 @@ ReadTrainer:
 	ld c, a
 	ld hl, SpecialTrainerMoves
 .loopAdditionalMoveData
-	ld a, [hli]
+	ld a, [hli]  ; a holds trainer class from data table entry
 	cp $ff
 	jr z, .FinishUp
-	cp b
-	jr nz, .asm_39c46
+	cp b  ; b holds the opponent trainer class
+	jr nz, .asm_39c46  ; this jump will be taken if trainer class isn't the currently loaded one
 	ld a, [hli]
-	cp c
-	jr nz, .asm_39c46
+	cp c  ; c holds the opponent trainer number
+	jr nz, .asm_39c46  ; this jump will be taken if trainer number isn't the currently loaded one
 	ld d, h
 	ld e, l
 .writeAdditionalMoveDataLoop
