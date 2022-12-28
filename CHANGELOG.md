@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Battle Now mode
 
+### Changed
+- Re-enabled animations
+
 ### Fixed
 - Debug mode assigns a team to the player at the start Battle Now
 

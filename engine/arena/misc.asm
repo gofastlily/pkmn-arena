@@ -5,7 +5,7 @@ _hl_::
 InitOptions:
 	ld a, 1 ; no delay
 	ld [wLetterPrintingDelayFlags], a
-	ld a, %11000001  ; fast speed, animations off, set battle style
+	ld a, %01000001  ; fast speed, animations off, set battle style
 	ld [wOptions], a
 	ld a, 64
 	ld [wPrinterSettings], a
