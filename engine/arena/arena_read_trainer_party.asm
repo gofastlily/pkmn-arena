@@ -1,4 +1,4 @@
-ArenaReadTrainer:
+ArenaReadCpuTrainerParty:
 	; Manually set level for whole team
 	ld a, 50
 	ld [wCurEnemyLVL], a

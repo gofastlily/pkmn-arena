@@ -1,4 +1,4 @@
-ReadTrainer:
+ReadCpuTrainerParty:
 
 ; don't change any moves in a link battle
 	ld a, [wLinkState]

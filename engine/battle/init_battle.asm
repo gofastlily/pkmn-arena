@@ -56,10 +56,10 @@ InitBattleCommon:
 	ld [wTrainerClass], a
 	call GetTrainerInformation
 
-	callfar ReadTrainer
+	callfar ReadCpuTrainerParty
 	callfar ShowTeams
 	call PickTeamsFromRoster
-	callfar ArenaReadTrainer
+	callfar ArenaReadCpuTrainerParty
 
 	callfar DoBattleTransitionAndInitBattleVariables
 	call _LoadTrainerPic
