@@ -46,7 +46,7 @@ TrainerAIPointers:
 	dbw 1, SabrinaAI ; sabrina
 	dbw 3, GenericAI
 	dbw 1, Rival2AI ; rival2
-	dbw 1, Rival3AI ; rival3
+	dbw 1, GenericAI ; rival3
 	dbw 2, LoreleiAI ; lorelei
 	dbw 3, GenericAI
 	dbw 2, AgathaAI ; agatha
