@@ -1,6 +1,10 @@
 ArenaReadCpuTrainerParty:
 	; Manually set level for whole team
+IF DEF(_DEBUG)
+	ld a, 5
+ELSE
 	ld a, 50
+ENDC
 	ld [wCurEnemyLVL], a
 
 	call ArenaLoadTrainerData

@@ -7,7 +7,11 @@ InitBattle::
 	ld [wArenaRosterCountCpu], a
 	ld [wArenaRosterTimerCpu], a
 	ld [wArenaRosterCursorLocationY], a
+IF DEF(_DEBUG)
+	ld a, 1
+ELSE
 	ld a, 3
+ENDC
 	ld [wArenaRosterTargetCount], a
 	ld a, $77
 	ld [wArenaRosterOrder], a

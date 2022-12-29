@@ -285,6 +285,8 @@ INCLUDE "engine/battle/read_trainer_party.asm"
 
 INCLUDE "engine/arena/arena_read_trainer_party.asm"
 
+INCLUDE "engine/arena/enemy_pp.asm"
+
 INCLUDE "data/trainers/special_moves.asm"
 
 INCLUDE "data/trainers/parties.asm"
@@ -606,6 +608,23 @@ SwitchEnemyMon:
 	ld bc, 4
 	call CopyData
 
+	;joenote - don't copy PP information if transformed
+	ld a, [wEnemyBattleStatus3]
+	bit 3, a 	;check the state of the enemy transformed bit
+	jr nz, .skiptransformed	;skip ahead if bit is set
+
+	;joenote - copy PP information
+	ld a, [wEnemyMonPartyPos]
+	ld hl, wEnemyMon1PP
+	ld bc, wEnemyMon2 - wEnemyMon1
+	call AddNTimes
+	ld d, h
+	ld e, l
+	ld hl, wEnemyMonPP
+	ld bc, 4
+	call CopyData
+
+.skiptransformed
 	ld hl, AIBattleWithdrawText
 	call PrintText
 
