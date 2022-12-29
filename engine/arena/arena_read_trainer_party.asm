@@ -34,7 +34,6 @@ ArenaReadCpuTrainerParty:
 	ld a, [wArenaTrainerTeamLocation+1]
 	ld l, a
 	call ArenaLoadTrainerParty
-
 	call ArenaLoadAdditionalMoveData
 
 	ld a, [wArenaBattleTempCpuRosterIndex]
@@ -44,10 +43,8 @@ ArenaReadCpuTrainerParty:
 	jp .loadTrainerPartyLoop
 
 .endLoadTrainerPartyLoop
-
-	; Probably remove
-	call ArenaLoadTrainerMoney
 	ret
+
 
 ArenaLoadTrainerData:
 	; set [wEnemyPartyCount] to 0, [wEnemyPartySpecies] to FF
@@ -179,31 +176,6 @@ ArenaLoadAdditionalMoveData:
 	jr .writeAdditionalMoveDataLoop
 
 .FinishUp
-	ret
-
-
-ArenaLoadTrainerMoney:
-	; clear wAmountMoneyWon addresses
-	xor a
-	ld de, wAmountMoneyWon
-	ld [de], a
-	inc de
-	ld [de], a
-	inc de
-	ld [de], a
-	ld a, [wCurEnemyLVL]
-	ld b, a
-.LastLoop
-	; update wAmountMoneyWon addresses (money to win) based on enemy's level
-	ld hl, wTrainerBaseMoney + 1
-	ld c, 2 ; wAmountMoneyWon is a 3-byte number
-	push bc
-	predef AddBCDPredef
-	pop bc
-	inc de
-	inc de
-	dec b
-	jr nz, .LastLoop ; repeat wCurEnemyLVL times
 	ret
 
 

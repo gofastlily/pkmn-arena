@@ -314,6 +314,18 @@ CopyUncompressedPicToHL::
 	ret
 
 
+TeamSelectionLoadPokeball:
+	ld a, $C0
+	ld [hl], a
+	ret
+
+
+TeamSelectionLoadEmptyPokeball:
+	ld a, $C3
+	ld [hl], a
+	ret
+
+
 TeamSelectionBlankPokeballs:
 	ld a, [wArenaRosterTargetCount]
 	cp 1
@@ -330,47 +342,35 @@ TeamSelectionBlankPokeballs:
 	jr z, .rosterSix
 	ret
 .rosterSix
-	ld a, $C3
 	hlcoord 14, 7
-	ld [hl], a
-	ld a, $C3
+	call TeamSelectionLoadEmptyPokeball
 	hlcoord 6, 16
-	ld [hl], a
+	call TeamSelectionLoadEmptyPokeball
 .rosterFive
-	ld a, $C3
 	hlcoord 13, 7
-	ld [hl], a
-	ld a, $C3
+	call TeamSelectionLoadEmptyPokeball
 	hlcoord 5, 16
-	ld [hl], a
+	call TeamSelectionLoadEmptyPokeball
 .rosterFour
-	ld a, $C3
 	hlcoord 12, 7
-	ld [hl], a
-	ld a, $C3
+	call TeamSelectionLoadEmptyPokeball
 	hlcoord 4, 16
-	ld [hl], a
+	call TeamSelectionLoadEmptyPokeball
 .rosterThree
-	ld a, $C3
 	hlcoord 11, 7
-	ld [hl], a
-	ld a, $C3
+	call TeamSelectionLoadEmptyPokeball
 	hlcoord 3, 16
-	ld [hl], a
+	call TeamSelectionLoadEmptyPokeball
 .rosterTwo
-	ld a, $C3
 	hlcoord 10, 7
-	ld [hl], a
-	ld a, $C3
+	call TeamSelectionLoadEmptyPokeball
 	hlcoord 2, 16
-	ld [hl], a
+	call TeamSelectionLoadEmptyPokeball
 .rosterOne
-	ld a, $C3
 	hlcoord 9, 7
-	ld [hl], a
-	ld a, $C3
+	call TeamSelectionLoadEmptyPokeball
 	hlcoord 1, 16
-	ld [hl], a
+	call TeamSelectionLoadEmptyPokeball
 	ret
 
 
@@ -390,29 +390,23 @@ TeamSelectionPlayerPartyPokeballs:
 	jr z, .playerRosterSix
 	ret
 .playerRosterSix
-	ld a, $C0
 	hlcoord 14, 7
-	ld [hl], a
+	call TeamSelectionLoadPokeball
 .playerRosterFive
-	ld a, $C0
 	hlcoord 13, 7
-	ld [hl], a
+	call TeamSelectionLoadPokeball
 .playerRosterFour
-	ld a, $C0
 	hlcoord 12, 7
-	ld [hl], a
+	call TeamSelectionLoadPokeball
 .playerRosterThree
-	ld a, $C0
 	hlcoord 11, 7
-	ld [hl], a
+	call TeamSelectionLoadPokeball
 .playerRosterTwo
-	ld a, $C0
 	hlcoord 10, 7
-	ld [hl], a
+	call TeamSelectionLoadPokeball
 .playerRosterOne
-	ld a, $C0
 	hlcoord 9, 7
-	ld [hl], a
+	call TeamSelectionLoadPokeball
 	ret
 
 
@@ -432,29 +426,23 @@ TeamSelectionEnemyPartyPokeballs:
 	jr z, .enemyRosterSix
 	ret
 .enemyRosterSix
-	ld a, $C0
 	hlcoord 6, 16
-	ld [hl], a
+	call TeamSelectionLoadPokeball
 .enemyRosterFive
-	ld a, $C0
 	hlcoord 5, 16
-	ld [hl], a
+	call TeamSelectionLoadPokeball
 .enemyRosterFour
-	ld a, $C0
 	hlcoord 4, 16
-	ld [hl], a
+	call TeamSelectionLoadPokeball
 .enemyRosterThree
-	ld a, $C0
 	hlcoord 3, 16
-	ld [hl], a
+	call TeamSelectionLoadPokeball
 .enemyRosterTwo
-	ld a, $C0
 	hlcoord 2, 16
-	ld [hl], a
+	call TeamSelectionLoadPokeball
 .enemyRosterOne
-	ld a, $C0
 	hlcoord 1, 16
-	ld [hl], a
+	call TeamSelectionLoadPokeball
 	ret
 
 
@@ -617,6 +605,7 @@ IsThisTeamOkayText:
 _IsThisTeamOkayText::
 	text "Is this team okay?"
 	done
+
 
 UpdateRosterCursorPosition:
 	hlcoord 8, 1
@@ -1017,50 +1006,6 @@ endr
 	ld e, a
 	ld d, 0
 	add hl, de
-	ret
-
-
-RandomRange::
-	; Return a random number between 0 and a (non-inclusive).
-	push bc
-	ld c, a
-
-	; b = $100 % c
-	xor a
-	sub c
-.mod
-	sub c
-	jr nc, .mod
-	add c
-	ld b, a
-
-	; Get a random number
-	; from 0 to $ff - b.
-	push bc
-.loop
-	call Random
-	ldh a, [hRandomAdd]
-	ld c, a
-	add b
-	jr c, .loop
-	ld a, c
-	pop bc
-
-	call SimpleDivide
-
-	pop bc
-	ret
-
-
-SimpleDivide::
-	; Divide a by c. Return quotient b and remainder a.
-	ld b, 0
-.loop
-	inc b
-	sub c
-	jr nc, .loop
-	dec b
-	add c
 	ret
 
 
