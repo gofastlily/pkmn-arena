@@ -6,15 +6,21 @@ StartBattleNow:
 
 
 SetBattleNowTeam:
+	; Manually set level for whole team
+IF DEF(_DEBUG)
+	ld a, 100
+ELSE
+	ld a, 50
+ENDC
+	ld b, a
 .loop
 	ld a, [de]
 	cp -1
 	ret z
 	ld [wcf91], a
 	inc de
-	ld a, [de]
+	ld a, b
 	ld [wCurEnemyLVL], a
-	inc de
 	call AddPartyMon
 	jr .loop
 	ret
@@ -35,33 +41,15 @@ SetBattleNowTeamR1B:
 
 
 BattleNowTeamR1A:
-	db PIKACHU, 50
-	db BULBASAUR, 50
-	db CHARMANDER, 50
-	db SQUIRTLE, 50
-	db SANDSHREW, 50
-	db CLEFAIRY, 50
-	db -1 ; end
+	db PIKACHU, BULBASAUR, CHARMANDER, SQUIRTLE, SANDSHREW, CLEFAIRY, -1
 
 
 BattleNowTeamR1B:
-	db MAGNEMITE, 50
-	db ODDISH, 50
-	db VULPIX, 50
-	db PSYDUCK, 50
-	db CUBONE, 50
-	db MEOWTH, 50
-	db -1 ; end
+	db MAGNEMITE, ODDISH, VULPIX, PSYDUCK, CUBONE, MEOWTH, -1
 
 
 BattleNowTeamDebug:
-	db MEWTWO, 100
-	db MEW, 100
-	db DRAGONITE, 100
-	db ARTICUNO, 100
-	db ZAPDOS, 100
-	db MOLTRES, 100
-	db -1 ; end
+	db MEWTWO, MEW, DRAGONITE, ARTICUNO, ZAPDOS, MOLTRES, -1 ; end
 
 
 BattleNowTeamMovesR1A:
