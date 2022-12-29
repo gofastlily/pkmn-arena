@@ -18,9 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Known Issues
 - Wrong sprites for player's Pokémon
 - Wrong palette for sprite on battle end screen
-- Game crashes after battle end screen
 - Sometimes wrong moves are loaded for opposing Pokémon
-- For some reason I'm showing the opponent's selected roster before the battle?
 
 
 ## [0.0.1](https://gitlab.lily.rip/lily/pkmn-arena/-/compare/0.0.0...0.0.1) - 2022-10-17

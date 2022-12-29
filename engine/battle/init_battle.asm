@@ -1,7 +1,6 @@
 InitBattle::
 	; Clear battle temp values
 	xor a
-	ld [wArenaBattleTemp], a
 	ld [wArenaBattleTempCpuRosterIndex], a
 	ld [wArenaBattleTempCpuRosterValue], a
 	ld [wArenaRosterCountPlayer], a
@@ -57,20 +56,10 @@ InitBattleCommon:
 	ld [wTrainerClass], a
 	call GetTrainerInformation
 
-	ld a, [wArenaBattleTemp]
-	bit 7, a
-	cp 0
-	jp nz, .arenaRead
 	callfar ReadTrainer
-	jr .readDone
-.arenaRead
-	callfar ArenaReadTrainer
-.readDone
-
 	callfar ShowTeams
-	ld a, [wArenaBattleTemp]
-	bit 7, a
-	jp z, PickTeamsFromRoster
+	call PickTeamsFromRoster
+	callfar ArenaReadTrainer
 
 	callfar DoBattleTransitionAndInitBattleVariables
 	call _LoadTrainerPic
@@ -617,13 +606,8 @@ PickTeamsFromRoster:
 .endRosterPromptLoop
 
 	call ShuffleOpponentRoster
-
-	; Mark team as selected
-	ld a, [wArenaBattleTemp]
-	set 7, a
-	ld [wArenaBattleTemp], a
 	call LoadPlayerRoster
-	jp InitBattleCommon
+	ret
 
 
 IsThisTeamOkayText:
