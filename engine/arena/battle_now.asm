@@ -2,7 +2,7 @@ StartBattleNow:
 	call PrepBattleNow
 	predef HealParty
 	call NewBattle
-	call Init
+	call SoftReset
 
 
 SetBattleNowTeam:
