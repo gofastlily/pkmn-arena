@@ -879,50 +879,6 @@ AlreadyInRoster:
 	ret
 
 
-GetValueFromRosterCpu:
-	; get a value from the roster by index (a)
-	cp 0
-	jp z, .indexZero
-	cp 1
-	jp z, .indexOne
-	cp 2
-	jp z, .indexTwo
-	cp 3
-	jp z, .indexThree
-	cp 4
-	jp z, .indexFour
-	cp 5
-	jp z, .indexFive
-	ret
-.indexZero
-	ld a, [wArenaRosterOrderCpu]
-	and $7
-	ret
-.indexOne
-	ld a, [wArenaRosterOrderCpu]
-	swap a
-	and $7
-	ret
-.indexTwo
-	ld a, [wArenaRosterOrderCpu+1]
-	and $7
-	ret
-.indexThree
-	ld a, [wArenaRosterOrderCpu+1]
-	swap a
-	and $7
-	ret
-.indexFour
-	ld a, [wArenaRosterOrderCpu+2]
-	and $7
-	ret
-.indexFive
-	ld a, [wArenaRosterOrderCpu+2]
-	swap a
-	and $7
-	ret
-
-
 SetValueToRosterCpu:
 	; set a value (e) from the roster by index (a)
 	cp 0
@@ -1015,10 +971,10 @@ SwapRosterOrderCpu:
 	; c = j
 	; arr[i], arr[j] = arr[j], arr[i]
 	ld a, b
-	call GetValueFromRosterCpu
+	callfar ArenaGetValueFromRosterCpu
 	ld d, a
 	ld a, c
-	call GetValueFromRosterCpu
+	callfar ArenaGetValueFromRosterCpu
 	ld e, a
 	ld a, b
 	call SetValueToRosterCpu
