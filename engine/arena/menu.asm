@@ -266,7 +266,7 @@ rept SCREEN_WIDTH - 1
 endr
 	; add to x
 	add a, 2
-	; load wTileMap into hl and add the y value
+	; add to wTileMap and load into hl
 	ld hl, wTileMap
 	ld e, a
 	ld d, 0
