@@ -909,13 +909,6 @@ _EnemyMonFaintedText::
 	line "fainted!"
 	prompt
 
-_MoneyForWinningText::
-	text "<PLAYER> got ¥@"
-	text_bcd wAmountMoneyWon, 3 | LEADING_ZEROES | LEFT_ALIGN
-	text_start
-	line "for winning!"
-	prompt
-
 _TrainerDefeatedText::
 	text "<PLAYER> defeated"
 	line "@"

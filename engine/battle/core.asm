@@ -955,17 +955,7 @@ TrainerBattleVictory:
 	ld c, 40
 	call DelayFrames
 	call PrintEndBattleText
-; win money
-	ld hl, MoneyForWinningText
-	call PrintText
-	ld de, wPlayerMoney + 2
-	ld hl, wAmountMoneyWon + 2
-	ld c, $3
-	predef_jump AddBCDPredef
-
-MoneyForWinningText:
-	text_far _MoneyForWinningText
-	text_end
+	ret
 
 TrainerDefeatedText:
 	text_far _TrainerDefeatedText
