@@ -16,7 +16,6 @@ INCLUDE "engine/link/cable_club.asm"
 INCLUDE "engine/menus/main_menu.asm"
 INCLUDE "engine/movie/oak_speech/oak_speech.asm"
 INCLUDE "engine/overworld/special_warps.asm"
-INCLUDE "engine/debug/debug_party.asm"
 INCLUDE "engine/menus/naming_screen.asm"
 INCLUDE "engine/movie/oak_speech/oak_speech2.asm"
 INCLUDE "engine/items/subtract_paid_money.asm"
@@ -404,6 +403,7 @@ INCLUDE "engine/events/give_pokemon.asm"
 INCLUDE "engine/battle/get_trainer_name.asm"
 INCLUDE "engine/math/random.asm"
 INCLUDE "engine/predefs.asm"
+INCLUDE "engine/arena/pre_battle.asm"
 
 
 SECTION "Surfing Minigame", ROMX
@@ -423,10 +423,10 @@ INCLUDE "engine/pikachu/pikachu_status.asm"
 INCLUDE "engine/pikachu/pikachu_emotions.asm"
 INCLUDE "engine/pikachu/pikachu_movement.asm"
 INCLUDE "engine/pikachu/pikachu_pic_animation.asm"
-INCLUDE "engine/debug/debug_menu.asm"
 
 
 SECTION "Arena", ROMX
 INCLUDE "engine/arena/menu.asm"
 INCLUDE "engine/arena/misc.asm"
 INCLUDE "engine/arena/battle_now.asm"
+INCLUDE "engine/arena/post_battle.asm"
