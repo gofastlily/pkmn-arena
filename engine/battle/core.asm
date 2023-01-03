@@ -822,6 +822,7 @@ FaintEnemyPokemon:
 	call PrintText
 	call PrintEmptyString
 	call SaveScreenTilesToBuffer1
+	ret  ; Skip experience I hope
 	xor a
 	ld [wBattleResult], a
 	ld b, EXP_ALL
@@ -1171,9 +1172,9 @@ ChooseNextMon:
 HandlePlayerBlackOut:
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
-	jr z, .linkBattle
+	jr z, .notRival1Battle
 	ret z ;  starter battle in oak's lab: don't black out
-.linkBattle
+.notRival1Battle
 	ld b, SET_PAL_BATTLE_BLACK
 	call RunPaletteCommand
 	ld a, [wLinkState]
