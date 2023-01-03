@@ -81,36 +81,7 @@ Pikachu_IsInArray::
 	ret
 
 GetPikachuMovementScriptByte::
-	push hl
-	push bc
-	ldh a, [hLoadedROMBank]
-	push af
-	ld a, [wPikachuMovementScriptBank]
-	call BankswitchCommon
-	ld hl, wPikachuMovementScriptAddress
-	ld c, [hl]
-	inc hl
-	ld b, [hl]
-	ld a, [bc]
-	inc bc
-	ld [hl], b
-	dec hl
-	ld [hl], c
-	ld c, a
-	pop af
-	call BankswitchCommon
-	ld a, c
-	pop bc
-	pop hl
 	ret
 
 ApplyPikachuMovementData::
-	ldh a, [hLoadedROMBank]
-	ld b, a
-	push af
-	ld a, BANK(ApplyPikachuMovementData_)
-	call BankswitchCommon
-	call ApplyPikachuMovementData_
-	pop af
-	call BankswitchCommon
 	ret
