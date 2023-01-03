@@ -36,4 +36,3 @@ InitBattleVariables:
 	ld [wBattleType], a
 .notSafariBattle
 	jpfar PlayBattleMusic
-.end

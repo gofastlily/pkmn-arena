@@ -25,13 +25,11 @@ ENDC
 	and a
 	jr z, DetermineWildOpponent
 
-
 InitOpponent:
 	ld a, [wCurOpponent]
 	ld [wcf91], a
 	ld [wEnemyMonSpecies2], a
 	jr InitBattleCommon
-
 
 DetermineWildOpponent:
 	ld a, [wd732]
@@ -86,7 +84,6 @@ InitBattleCommon:
 	callabd_ModifyPikachuHappiness PIKAHAPPY_GYMLEADER ; useless since already in bank3d
 	jp _InitBattleCommon
 
-
 InitWildBattle:
 	ld a, $1
 	ld [wIsInBattle], a
@@ -136,7 +133,6 @@ InitWildBattle:
 	hlcoord 12, 0
 	predef CopyUncompressedPicToTilemap
 
-
 ; common code that executes after init battle code specific to trainer or wild battles
 _InitBattleCommon:
 	ld b, SET_PAL_BATTLE_BLACK
@@ -181,7 +177,6 @@ _InitBattleCommon:
 .emptyString
 	db "@"
 
-
 _LoadTrainerPic:
 ; wd033-wd034 contain pointer to pic
 	ld a, [wTrainerPicPointer]
@@ -199,7 +194,6 @@ _LoadTrainerPic:
 	ld a, $77
 	ld c, a
 	jp LoadUncompressedSpriteData
-
 
 LoadMonBackPic:
 ; Assumes the monster's attributes have
@@ -220,7 +214,6 @@ LoadMonBackPic:
 	ldh a, [hLoadedROMBank]
 	ld b, a
 	jp CopyVideoData
-
 
 ; animates the mon "growing" out of the pokeball
 AnimateSendingOutMon:
@@ -262,7 +255,6 @@ AnimateSendingOutMon:
 	ldh a, [hBaseTileID]
 	add $31
 	jr CopyUncompressedPicToHL
-
 
 CopyUncompressedPicToTilemap:
 	ld a, [wPredefHL]
