@@ -1,6 +1,6 @@
 ; X Draw trainer sprite
-; Draw small Pokémon sprites
-; Draw mini health bars
+; X Draw small Pokémon sprites
+; X Draw mini health bars
 ; Animate health bars
 ; Show fainted Pokémon differently
 ; Win/Lose text

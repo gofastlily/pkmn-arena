@@ -90,7 +90,6 @@ ArenaLoadTrainerData:
 
 
 ArenaLoadTrainerParty:
-	inc hl  ; skip pokemon level value
 	inc b
 .loopTrainerPokemon
 	; loop b times
@@ -144,7 +143,6 @@ ArenaLoadAdditionalMoveData:
 
 	; loop to the next move
 	ld a, [wArenaBattleTempCpuRosterValue]
-	inc a
 	inc a
 	cp b
 	jp nz, .nextMove

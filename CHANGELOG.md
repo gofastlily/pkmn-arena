@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Post-battle health bars use the incorrect palette
 - Post-battle enemy trainer sprite uses the incorrect palette
 - Post-battle only six sprites of twelve are visible
+- Post-battle the incorrect 'party' sprites are used
 
 
 ## [0.0.1](https://gitlab.lily.rip/lily/pkmn-arena/-/compare/0.0.0...0.0.1) - 2022-10-17
