@@ -26,7 +26,7 @@ EndOfBattle:
 	ld c, 200
 	call DelayFrames
 .notLinkBattle
-	callfar AnnounceWinner
+	callfar ArenaPostBattle
 	xor a
 	ld [wLowHealthAlarm], a ;disable low health alarm
 	ld [wChannelSoundIDs + CHAN5], a

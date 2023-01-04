@@ -64,12 +64,14 @@ INCLUDE "engine/events/hidden_objects/book_or_sculpture.asm"
 INCLUDE "engine/events/hidden_objects/elevator.asm"
 INCLUDE "engine/events/hidden_objects/town_map.asm"
 INCLUDE "engine/events/hidden_objects/pokemon_stuff.asm"
+INCLUDE "engine/arena/hp_bar_mini.asm"
 
 
 SECTION "bank4", ROMX
 
 INCLUDE "gfx/font.asm"
 INCLUDE "engine/pokemon/status_screen.asm"
+INCLUDE "engine/arena/draw_hp_bar_mini.asm"
 INCLUDE "engine/menus/party_menu.asm"
 INCLUDE "gfx/player.asm"
 INCLUDE "engine/menus/start_sub_menus.asm"
@@ -425,8 +427,12 @@ INCLUDE "engine/pikachu/pikachu_movement.asm"
 INCLUDE "engine/pikachu/pikachu_pic_animation.asm"
 
 
-SECTION "Arena", ROMX
+SECTION "Arena 1", ROMX
 INCLUDE "engine/arena/menu.asm"
 INCLUDE "engine/arena/misc.asm"
 INCLUDE "engine/arena/battle_now.asm"
 INCLUDE "engine/arena/post_battle.asm"
+
+
+Section "Arena 2", ROMX
+INCLUDE "data/arena/battle_now_moves.asm"

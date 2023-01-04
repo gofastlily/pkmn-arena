@@ -12,9 +12,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Roster selection screen before battle
 - Option to disable nicknaming by default
 
-### Changed
-- Re-enabled animations
-
 ### Fixed
 - Debug mode assigns a team to the player at the start Battle Now
 
@@ -22,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Wrong sprites for player's Pokémon
 - Wrong palette for sprite on battle end screen
 - Sometimes wrong moves are loaded for opposing Pokémon
+- Trainer sprites are corrupt after viewing status screen during roster selection
+- Post-battle health bars use the incorrect palette
+- Post-battle enemy trainer sprite uses the incorrect palette
+- Post-battle only six sprites of twelve are visible
 
 
 ## [0.0.1](https://gitlab.lily.rip/lily/pkmn-arena/-/compare/0.0.0...0.0.1) - 2022-10-17

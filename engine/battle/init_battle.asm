@@ -8,7 +8,7 @@ InitBattle::
 	ld [wArenaRosterTimerCpu], a
 	ld [wArenaRosterCursorLocationY], a
 IF DEF(_DEBUG)
-	ld a, 1
+	ld a, 6
 ELSE
 	ld a, 3
 ENDC
