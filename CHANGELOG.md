@@ -18,7 +18,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Known Issues
 - Wrong sprites for player's Pokémon
 - Wrong palette for sprite on battle end screen
-- Sometimes wrong moves are loaded for opposing Pokémon
 - Trainer sprites are corrupt after viewing status screen during roster selection
 - Post-battle health bars use the incorrect palette
 - Post-battle enemy trainer sprite uses the incorrect palette
