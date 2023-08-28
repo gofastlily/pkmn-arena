@@ -200,11 +200,13 @@ ENDC
 IF DEF(_DEBUG)
 	ld a, b
 	bit BIT_SELECT, a
-	jp z, MainMenu
+	jp nz, .skipMainMenu
+	farjp MainMenu
+.skipMainMenu
 	callfar DebugMenu
 	jp hl
 ELSE
-	jp MainMenu
+	farjp MainMenu
 ENDC
 
 .asm_42f0

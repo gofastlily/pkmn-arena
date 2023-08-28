@@ -29,7 +29,9 @@ PrepareOakSpeech:
 	ld [wLetterPrintingDelayFlags], a
 	ld a, [wOptionsInitialized]
 	and a
-	call z, InitOptions
+	jp nz, .skipInitOptions
+	farcall InitOptions
+.skipInitOptions
 	; These debug names are used for StartNewGameDebug.
 	; TestBattle uses the debug names from DebugMenu.
 	ld hl, DebugNewGamePlayerName
@@ -42,7 +44,7 @@ PrepareOakSpeech:
 	call CopyData ; rip optimizations
 	ret
 
-OakSpeech:
+OakSpeech::
 	call StopAllMusic ; stop music
 	ld a, BANK(Music_Routes2)
 	ld c, a
