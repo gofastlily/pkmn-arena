@@ -178,7 +178,7 @@ _SilphCo7Text_51ecd::
 
 	para "You're not good"
 	line "enough to play"
-	cont "with us big boys!"
+	cont "with us big kids!"
 	prompt
 
 _SilphCo7Text_51ed2::

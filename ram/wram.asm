@@ -2300,7 +2300,14 @@ wRoute18Gate1FCurScript:: db
 	ds 78
 wGameProgressFlagsEnd::
 
-	ds 56
+; $00 = male
+; $01 = female
+; $02 = enby
+wPlayerGender::
+	ds 1
+	
+; unused
+	ds 55
 
 wObtainedHiddenItemsFlags:: flag_array 112
 
