@@ -186,6 +186,8 @@ SilphCo7Script3:
 	ld a, [wRivalStarter]
 	add 4
 	ld [wTrainerNo], a
+	ld a, 1
+	ld [wIsTrainerBattle], a
 	ld a, $4
 	call SilphCo7Text_51c10
 	ret
@@ -194,6 +196,8 @@ SilphCo7Script4:
 	ld a, [wIsInBattle]
 	cp $ff
 	jp z, SilphCo7Text_51c0c
+	xor a
+	ld [wIsTrainerBattle], a
 	ld a, $f0
 	ld [wJoyIgnore], a
 	SetEvent EVENT_BEAT_SILPH_CO_RIVAL

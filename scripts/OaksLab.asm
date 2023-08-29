@@ -343,6 +343,8 @@ OaksLabScript13:
 	ld a, $1
 	ld [wSpriteIndex], a
 	call GetSpritePosition1
+	ld a, 1
+	ld [wIsTrainerBattle], a
 	ld a, OPP_RIVAL1
 	ld [wCurOpponent], a
 	ld a, $1
@@ -362,6 +364,9 @@ OaksLabScript13:
 	ret
 
 OaksLabScript14:
+	xor a
+	ld [wIsTrainerBattle], a
+
 	ld a, $ff
 	ld [wJoyIgnore], a
 

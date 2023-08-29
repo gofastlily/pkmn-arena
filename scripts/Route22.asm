@@ -26,6 +26,8 @@ Route22Script_50ed6:
 	ld [wCurOpponent], a
 	ld a, $2
 	ld [wTrainerNo], a
+	ld a, 1
+	ld [wIsTrainerBattle], a
 	ret
 
 Route22Script_50ee1:
@@ -34,6 +36,8 @@ Route22Script_50ee1:
 	ld a, [wRivalStarter]
 	add 7
 	ld [wTrainerNo], a
+	ld a, 1
+	ld [wIsTrainerBattle], a
 	ret
 
 Route22MoveRivalSprite:
@@ -147,6 +151,8 @@ Route22Script2:
 	ld a, [wIsInBattle]
 	cp $ff
 	jp z, Route22Script_50ece
+	xor a
+	ld [wIsTrainerBattle], a
 	ld a, [wRivalStarter]
 	cp RIVAL_STARTER_FLAREON
 	jr nz, .keep_rival_starter
@@ -302,6 +308,8 @@ Route22Script5:
 	ld a, [wIsInBattle]
 	cp $ff
 	jp z, Route22Script_50ece
+	xor a
+	ld [wIsTrainerBattle], a
 	ld a, $2
 	ldh [hSpriteIndex], a
 	ld a, [wcf0d]

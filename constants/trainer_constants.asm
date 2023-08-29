@@ -1,4 +1,4 @@
-DEF OPP_ID_OFFSET EQU 200
+DEF OPP_ID_OFFSET EQU 0
 
 MACRO trainer_const
 	const \1

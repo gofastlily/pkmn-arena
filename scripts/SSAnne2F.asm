@@ -98,6 +98,7 @@ SSAnne2Script1:
 	ld [wCurOpponent], a
 	ld a, $1
 	ld [wTrainerNo], a
+	ld [wIsTrainerBattle], a
 	call SSAnne2Script_61416
 	ld a, $2
 	ld [wSSAnne2FCurScript], a
@@ -107,6 +108,8 @@ SSAnne2Script2:
 	ld a, [wIsInBattle]
 	cp $ff
 	jp z, SSAnne2Script_613ab
+	xor a
+	ld [wIsTrainerBattle], a
 	call SSAnne2Script_61416
 	ld a, $f0
 	ld [wJoyIgnore], a
