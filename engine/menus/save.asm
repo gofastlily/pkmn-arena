@@ -153,10 +153,6 @@ SaveSAV:
 	ret nz
 .save
 	call SaveSAVtoSRAM
-	ld hl, SavingText
-	call PrintText
-	ld c, 128
-	call DelayFrames
 	ld hl, GameSavedText
 	call PrintText
 	ld c, 10
@@ -164,7 +160,7 @@ SaveSAV:
 	ld a, SFX_SAVE
 	call PlaySoundWaitForCurrent
 	call WaitForSoundToFinish
-	ld c, 30
+	ld c, 10
 	call DelayFrames
 	ret
 
@@ -180,10 +176,6 @@ SaveSAVConfirm:
 
 WouldYouLikeToSaveText:
 	text_far _WouldYouLikeToSaveText
-	text_end
-
-SavingText:
-	text_far _SavingText
 	text_end
 
 GameSavedText:
