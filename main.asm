@@ -424,3 +424,8 @@ INCLUDE "engine/pikachu/pikachu_emotions.asm"
 INCLUDE "engine/pikachu/pikachu_movement.asm"
 INCLUDE "engine/pikachu/pikachu_pic_animation.asm"
 INCLUDE "engine/debug/debug_menu.asm"
+
+
+SECTION "Enemy PP", romx
+
+INCLUDE "engine/battle/enemy_pp.asm"

@@ -256,9 +256,9 @@ CableClub_DoBattleOrTradeAgain:
 	dec c
 	jr nz, .unpatchEnemyMonsLoop
 	ld a, LOW(wEnemyMonOT)
-	ld [wUnusedCF8D], a
+	ld [wEnemyPowerPointsPointer], a
 	ld a, HIGH(wEnemyMonOT)
-	ld [wUnusedCF8D + 1], a
+	ld [wEnemyPowerPointsPointer + 1], a
 	xor a
 	ld [wTradeCenterPointerTableIndex], a
 	call StopAllMusic

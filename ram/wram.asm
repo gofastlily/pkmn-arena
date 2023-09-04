@@ -1241,8 +1241,9 @@ wItemList:: ds 16
 
 wListPointer:: dw
 
-; used to store pointers, but never read
-wUnusedCF8D:: dw
+; unread in default pokeyellow
+; used as a temp location for storing pointers for PP tracking
+wEnemyPowerPointsPointer:: dw
 
 wItemPrices:: dw
 
