@@ -2309,6 +2309,7 @@ wGameProgressFlagsEnd::
 wPlayerGender::
 	ds 1
 
+
 ; Menu values, 33 bytes
 wMenuHeight:: db  ; Max: 16
 wMenuWidth:: db  ; Max: 18
@@ -2319,7 +2320,28 @@ wMenuExtraText:: dw
 wMenuExtraCoords:: dw
 
 
-	ds 22
+; Temp storage for battles
+; counters for pre-battle enemy roster selection
+wArenaBattleTempCpuRosterIndex:: db
+wArenaBattleTempCpuRosterValue:: db
+
+
+; Temp storage for roster selection
+wArenaRosterTargetCount:: db
+wArenaRosterCountPlayer:: db
+wArenaRosterCountCpu:: db
+wArenaRosterTimerCpu:: db
+wArenaRosterCursorLocationY:: db
+
+
+; Team order when picking team for battles
+; six four-bit values
+wArenaRosterOrder:: ds 3
+wArenaRosterOrderCpu:: ds 3
+wArenaTrainerTeamLocation:: ds 2
+
+
+	ds 7
 
 wObtainedHiddenItemsFlags:: flag_array 112
 

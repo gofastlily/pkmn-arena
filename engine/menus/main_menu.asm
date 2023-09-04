@@ -24,16 +24,6 @@ MainMenu:
 	ld hl, wd72e
 	res 6, [hl]
 
-	ld a, [wSaveFileStatus]
-	cp 1
-	jp z, .tallerMenu
-	ld a, 6
-	ld [wMenuHeight], a
-	jp .setMenuWidth
-.tallerMenu
-	ld a, 4
-	ld [wMenuHeight], a
-.setMenuWidth
 	ld a, 13
 	ld [wMenuWidth], a
 
@@ -60,9 +50,9 @@ MainMenu:
 
 
 MainMenuChoicesList:
-	menu_choice Determine_MainMenuChoice_Continue, Action_MainMenuChoices_Continue, Text_MainMenuChoices_Continue
-	menu_choice Determine_MainMenuChoice_NewGame,  Action_MainMenuChoices_NewGame,  Text_MainMenuChoices_NewGame
-	menu_choice Determine_MainMenuChoice_Options,  Action_MainMenuChoices_Options,  Text_MainMenuChoices_Options
+	menu_choice Determine_MainMenuChoice_Continue,  Action_MainMenuChoices_Continue,  Text_MainMenuChoices_Continue
+	menu_choice Determine_MainMenuChoice_BattleNow, Action_MainMenuChoices_BattleNow, Text_MainMenuChoices_BattleNow
+	menu_choice Determine_MainMenuChoice_Options,   Action_MainMenuChoices_Options,   Text_MainMenuChoices_Options
 	dw MENU_CHOICES_LIST_END
 
 
@@ -72,7 +62,7 @@ Determine_MainMenuChoice_Continue:
 	ret z
 
 
-Determine_MainMenuChoice_NewGame:
+Determine_MainMenuChoice_BattleNow:
 	jp AlwaysShowMenuItem
 
 
@@ -99,8 +89,8 @@ Action_MainMenuChoices_Continue:
 	ret
 
 
-Action_MainMenuChoices_NewGame:
-	call StartNewGame
+Action_MainMenuChoices_BattleNow:
+	callfar StartBattleNow
 	ret
 
 
@@ -115,8 +105,8 @@ Text_MainMenuChoices_Continue:
 	db "CONTINUE@"
 
 
-Text_MainMenuChoices_NewGame:
-	db "NEW GAME@"
+Text_MainMenuChoices_BattleNow:
+	db "BATTLE NOW@"
 
 
 Text_MainMenuChoices_Options:
@@ -126,7 +116,7 @@ Text_MainMenuChoices_Options:
 InitOptions:
 	ld a, TEXT_DELAY_FAST
 	ld [wLetterPrintingDelayFlags], a
-	ld a, TEXT_DELAY_MEDIUM
+	ld a, %01001001  ; animations on, set battle style, skip nicknames, fast speed
 	ld [wOptions], a
 	ld a, 64 ; audio?
 	ld [wPrinterSettings], a

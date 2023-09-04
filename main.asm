@@ -434,3 +434,20 @@ SECTION "Menu", romx
 
 INCLUDE "engine/menus/menu_core.asm"
 INCLUDE "engine/menus/main_menu.asm"
+
+
+SECTION "Arena Engine", ROMX
+INCLUDE "engine/arena.asm"
+INCLUDE "engine/arena/arena_read_trainer_party.asm"
+INCLUDE "engine/arena/arena_mon_icons.asm"
+INCLUDE "engine/arena/battle_now.asm"
+INCLUDE "engine/arena/draw_hp_bar_mini.asm"
+INCLUDE "engine/arena/draw_hud_pokeball_gfx.asm"
+INCLUDE "engine/arena/hp_bar_mini.asm"
+INCLUDE "engine/arena/post_battle.asm"
+INCLUDE "engine/arena/pre_battle.asm"
+INCLUDE "engine/arena/random_range.asm"
+
+
+Section "Arena Data", ROMX
+INCLUDE "data/arena/battle_now_moves.asm"

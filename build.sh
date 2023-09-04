@@ -10,11 +10,11 @@ make
 
 # Document the free space
 echo "\`\`\`" > FREE_SPACE.md
-tools/free_space.awk BANK=all pokeyellow.map >> FREE_SPACE.md
+tools/free_space.awk BANK=all pkmn_arena.map >> FREE_SPACE.md
 echo "\`\`\`" >> FREE_SPACE.md
 
 # Generate a file hash
 echo "\`\`\`" > HASHES.md
-sha1sum pokeyellow.gbc pokeyellow.sym pokeyellow.map >> HASHES.md
-sha1sum pokeyellow_debug.gbc pokeyellow_debug.sym pokeyellow_debug.map >> HASHES.md
+sha1sum pkmn_arena.gbc pkmn_arena.sym pkmn_arena.map >> HASHES.md
+sha1sum pkmn_arena_debug.gbc pkmn_arena_debug.sym pkmn_arena_debug.map >> HASHES.md
 echo "\`\`\`" >> HASHES.md

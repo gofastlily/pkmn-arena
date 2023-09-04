@@ -36,7 +36,7 @@ OptionMenuJumpTable:
 	dw OptionsMenu_BattleStyle
 	dw OptionsMenu_SpeakerSettings
 	dw OptionsMenu_GBPrinterBrightness
-	dw OptionsMenu_DoNickname
+	dw OptionsMenu_Dummy
 	dw OptionsMenu_Dummy
 	dw OptionsMenu_Cancel
 
@@ -406,7 +406,7 @@ OptionsControl:
 	scf
 	ret
 .doNotWrapAround
-	cp $5  ; zero indexed number of options so the cursor skips the blank space
+	cp $4  ; zero indexed number of options so the cursor skips the blank space
 	jr c, .regularIncrement
 	ld [hl], $6
 .regularIncrement
@@ -417,7 +417,7 @@ OptionsControl:
 	ld a, [hl]
 	cp $7
 	jr nz, .doNotMoveCursorToPrintOption
-	ld [hl], $5  ; zero indexed number of options so the cursor skips the blank space
+	ld [hl], $4  ; zero indexed number of options so the cursor skips the blank space
 	scf
 	ret
 .doNotMoveCursorToPrintOption
@@ -457,7 +457,7 @@ InitOptionsMenu:
 	call PlaceString
 	xor a
 	ld [wOptionsCursorLocation], a
-	ld c, 6 ; the number of options to loop through
+	ld c, 5 ; the number of options to loop through
 .loop
 	push bc
 	call GetOptionPointer ; updates the next option
@@ -478,8 +478,7 @@ AllOptionsText:
 	next "ANIMATION  :"
 	next "BATTLESTYLE:"
 	next "SOUND:"
-	next "PRINT:"
-	next "NICKNAME:@"
+	next "PRINT:@"
 
 OptionMenuCancelText:
 	db "CANCEL@"
