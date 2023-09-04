@@ -2,6 +2,15 @@ AskName:
 	call SaveScreenTilesToBuffer1
 	call GetPredefRegisters
 	push hl
+	ld a, [wOptions]
+	bit 3, a
+	jp z, .doNaming
+	ld a, [wcf91]
+	ld [wd11e], a
+	call GetMonName
+	pop hl
+	jp .declinedNickname
+.doNaming
 	ld a, [wIsInBattle]
 	dec a
 	hlcoord 0, 0

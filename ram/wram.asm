@@ -1935,6 +1935,7 @@ wRivalName:: ds NAME_LENGTH
 ;	01: Earphone1
 ;	10: Earphone2
 ;	11: Earphone3
+; bit 3 = skip nickname prompt
 ; bits 2-0 = text speed (number of frames to delay after printing a letter)
 ; 1: Fast
 ; 3: Medium
